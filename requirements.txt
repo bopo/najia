@@ -1,0 +1,10 @@
+bump2version
+watchdog
+flake8
+twine
+Click
+pytest
+pytest-runner
+sxtwl
+jinja2
+arrow
