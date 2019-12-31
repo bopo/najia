@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 import arrow
 import sxtwl
 from jinja2 import Template
@@ -7,6 +9,8 @@ from jinja2 import Template
 from najia.const import GANS, ZHIS, GUA64, XING5, GUA5, ZHI5, YAOS
 from najia.utils import (getGong, getNajia, getQin6, getShen6,
                          setShiYao, xkong, getGZ5)
+
+logger = logging.getLogger(__name__)
 
 
 class Najia(object):
@@ -84,6 +88,8 @@ class Najia(object):
 
         mark = ''.join([str(int(l) % 2) for l in symbol])
 
+        # logger.debug(mark)
+
         if 3 in symbol or 4 in symbol:
             bian = ''.join(['1' if v in [1, 4] else '0' for v in symbol])
             gong = getGong(mark, setShiYao(mark)[0])  # 卦宫
@@ -138,9 +144,7 @@ class Najia(object):
             qinf = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])]) + getGZ5(x)) for x in getNajia(godf)]
             qinfx = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(godf)]
             fspos = list(set(qinfx).difference(set(qin6x)))
-            print(qinfx.index(fspos[0]))
             seat = [qinfx.index(x) for x in fspos]
-            print(seat)
 
         symbol.reverse()
 
@@ -176,7 +180,7 @@ class Najia(object):
             'fu': self._fu(gong, qin6x)
         }
 
-        print(self.data)
+        # logger.info(self.data)
 
         return self
 

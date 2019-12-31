@@ -6,3 +6,5 @@ Click
 pytest
 pytest-runner
 sxtwl
+jinja2
+arrow
