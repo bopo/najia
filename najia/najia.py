@@ -7,7 +7,7 @@ import sxtwl
 from jinja2 import Template
 
 from najia.const import GANS, ZHIS, GUA64, XING5, GUA5, ZHI5, YAOS
-from najia.utils import (getGong, getNajia, getQin6, getShen6,
+from najia.utils import (getGong, getNajia, getQin6, getGod6,
                          setShiYao, xkong, getGZ5)
 
 logger = logging.getLogger(__name__)
@@ -52,7 +52,14 @@ class Najia(object):
             }
         }
 
-    def _fu(self, gong=None, qins=None):
+    def _hidden(self, gong=None, qins=None):
+        '''
+        计算伏神卦
+
+        :param gong:
+        :param qins:
+        :return:
+        '''
         if gong is None:
             raise Exception('')
 
@@ -73,8 +80,14 @@ class Najia(object):
                 'seat': seat,
             }
 
-    def _bian(self, symbol=None):
-        # 判断变爻
+    def _transform(self, symbol=None):
+        '''
+        计算变卦
+
+        :param symbol:
+        :return:
+        '''
+
         if symbol is None:
             raise Exception('')
 
@@ -104,20 +117,18 @@ class Najia(object):
             }
 
     def compile(self, symbol=None, date=None):
+        '''
+        根据参数编译卦
+
+        :param symbol:
+        :param date:
+        :return:
+        '''
         lunar = self._daily(date)
         solar = arrow.get(date)
 
         # 卦码
         mark = ''.join([str(int(l) % 2) for l in symbol])
-
-        # 判断变爻
-        if 3 in symbol or 4 in symbol:
-            bian = ''.join(['1' if v in [1, 4] else '0' for v in symbol])
-            biag = getGong(mark, setShiYao(mark)[0])  # 卦宫
-            qinb = [(getQin6(XING5[int(GUA5[biag])], ZHI5[ZHIS.index(x[1])]) + getGZ5(x)) for x in getNajia(bian)]
-        else:
-            bian = None
-            qinb = None
 
         # 卦宫
         gong = getGong(mark, setShiYao(mark)[0])  # 卦宫
@@ -126,46 +137,27 @@ class Najia(object):
         name = GUA64[mark]
 
         # 六亲
-        qin6 = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])]) + getGZ5(x)) for x in getNajia(mark)]
-        qin6x = [getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])]) for x in getNajia(mark)]
-
-        # 世应爻
-        shiy = setShiYao(mark)
+        qin6 = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
+        qinx = [getGZ5(x) for x in getNajia(mark)]
+        shiy = setShiYao(mark)  # 世应爻
 
         # 六神
-        god6 = getShen6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
-
-        godf = None
-        qinf = None
-        seat = None
-
-        if len(set(qin6x)) < 5:
-            godf = YAOS[gong] * 2
-            qinf = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])]) + getGZ5(x)) for x in getNajia(godf)]
-            qinfx = [(getQin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(godf)]
-            fspos = list(set(qinfx).difference(set(qin6x)))
-            seat = [qinfx.index(x) for x in fspos]
+        god6 = getGod6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
 
         symbol.reverse()
 
-        self.data = {
-            'solar': solar,
-            'lunar': lunar,
-            'symbol': symbol,
-            'name': name,
-            'mark': mark,
-            'gong': gong,
-            'shiy': shiy,
-            'god6': god6,
-            'qin6': qin6,
-            'dong': [i for i, x in enumerate(symbol) if x > 2],
-            'bian': {'mark': bian, 'qin6': qinb, 'name': GUA64.get(bian)},
-            'fu': {'mark': godf, 'qin6': qinf, 'name': GUA64.get(godf), 'seat': seat},
-        }
-
+        # 动爻位置
         dong = [i for i, x in enumerate(symbol) if x > 2]
+
+        # 伏神
+        hide = self._hidden(gong, qin6)
+
+        # 变卦
+        bian = self._transform(symbol=symbol)
+
         self.data = {
             'symbol': symbol,
+            'gender': '',
             'title': '',
             'solar': solar,
             'lunar': lunar,
@@ -176,11 +168,12 @@ class Najia(object):
             'gong': gong,
             'shiy': shiy,
             'qin6': qin6,
-            'bian': self._bian(symbol=symbol),
-            'fu': self._fu(gong, qin6x)
+            'qinx': qinx,
+            'bian': bian,
+            'hide': hide
         }
 
-        # logger.info(self.data)
+        logger.info(self.data)
 
         return self
 
@@ -189,20 +182,38 @@ class Najia(object):
 
         :return:
         '''
+
+        demo = '''
+        男测：测天气
+
+        √ 公历：2019年 12月 25日 0时 20分
+        √ 干支：己亥年 丙子月 丙申日 戊子时 （旬空：辰巳)
+
+        得地山谦之水山蹇
+
+        青龙          兄弟癸酉金 `` 
+        玄武          子孙癸亥水 ``世 × 父母戊戌土 `  
+        白虎          父母癸丑土 `` 
+        螣蛇          兄弟丙申金 `  
+        勾陈 妻财丁卯木 官鬼丙午火 ``应
+        朱雀          父母丙辰土 ``
+        '''
+        print(demo)
+
         tpl = '''
-男测：{{desc}}
+男测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
 
 得{{name}}之{{bian.name}}卦
 
-{{god6.5}}{{fu.qin6.5}}{{qin6.5}} {{mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
-{{god6.4}}{{fu.qin6.4}}{{qin6.4}} {{mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
-{{god6.3}}{{fu.qin6.3}}{{qin6.3}} {{mark.3}} {{shiy.3}} {{dyao.3}} {{bian.qin6.3}} {{bian.mark.3}}
-{{god6.2}}{{fu.qin6.2}}{{qin6.2}} {{mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
-{{god6.1}}{{fu.qin6.1}}{{qin6.1}} {{mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
-{{god6.0}}{{fu.qin6.0}}{{qin6.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
+{{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
+{{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
+{{god6.3}}{{hide.qin6.3}}{{qin6.3}}{{qinx.3}} {{mark.3}} {{shiy.3}} {{dyao.3}} {{bian.qin6.3}} {{bian.mark.3}}
+{{god6.2}}{{hide.qin6.2}}{{qin6.2}}{{qinx.2}} {{mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
+{{god6.1}}{{hide.qin6.1}}{{qin6.1}}{{qinx.1}} {{mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
+{{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 '''
         rows = self.data
         yaos = ['``', '`', '``', '○', '×']
@@ -211,13 +222,14 @@ class Najia(object):
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
         rows['mark'].reverse()
 
-        if rows['fu']['qin6']:
+        if rows['hide']['qin6']:
             empty = '            '
-            rows['fu']['qin6'] = [
-                ' %s%s ' % (rows['fu']['qin6'][x], rows['fu']['qinx'][x]) if x in rows['fu']['seat'] else empty for x in
+            rows['hide']['qin6'] = [
+                ' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty
+                for x in
                 range(0, 6)]
         else:
-            rows['fu']['qin6'] = ['' for _ in range(0, 6)]
+            rows['hide']['qin6'] = ['' for _ in range(0, 6)]
 
         if rows['bian']['qin6']:
             rows['bian']['qin6'] = [

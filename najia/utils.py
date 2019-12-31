@@ -1,6 +1,14 @@
+import logging
 import math
 
 from najia import const
+
+logging.basicConfig(level='DEBUG')
+log = logging.getLogger(__name__)
+
+
+def getNajia(gz=None):
+    return getGZ5(gz)
 
 
 def getGZ5(gz=''):
@@ -9,17 +17,30 @@ def getGZ5(gz=''):
     return gz + const.XING5[const.ZHI5[zm]]
 
 
+def mark(symbol=None):
+    '''
+    单拆重交 转 二进制卦码
+    :param symbol:
+    :return:
+    '''
+    res = [str(int(x) % 2) for x in symbol]
+    log.debug(res)
+    return res
+
+
 def xkong(gz='甲子'):
     '''
     计算旬空
     
-    :param gz:
+    :param gz: 甲子 or 3,11
     :return:
     '''
-    g, z = [i for i in gz]
 
-    gm = const.GANS.index(g)
-    zm = const.ZHIS.index(z)
+    gm, zm = [i for i in gz]
+
+    if type(gz) == str:
+        gm = const.GANS.index(gm)
+        zm = const.ZHIS.index(zm)
 
     if gm == zm or zm < gm:
         zm += 12
@@ -29,7 +50,7 @@ def xkong(gz='甲子'):
     return const.KONG[xk]
 
 
-def getShen6(g=0):
+def getGod6(g=0):
     '''
     # 六神, 根据日干五行配对六神五行
 
@@ -37,12 +58,12 @@ def getShen6(g=0):
     :return:
     '''
 
+    g, _ = [i for i in g]
+
     if type(g) is str:
-        g, _ = [i for i in g]
+        g = const.GANS.index(g)
 
-    g = const.GANS.index(g)
     num = math.ceil((g + 1) / 2) - 1
-
     return const.SHEN6[num:] + const.SHEN6[:num]
 
 
@@ -107,10 +128,6 @@ def setShiYao(guaStr=None):
         return shiy(6)
 
     # 三世异
-    # [Nei[k] != v for k, v in enumerate(Wai)]
-
-    # if not int(Wai, 2) and int(Nei, 2):
-
     return shiy(3)
 
 
@@ -183,7 +200,7 @@ def getNajia(guaStr=None):
     gan = const.NAJIA[wai][1][0]
     wgz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[wai][1][1:]]  # 排干支
 
-    # print(ngz + wgz)
+    log.debug(ngz + wgz)
 
     return ngz + wgz
 
@@ -218,33 +235,33 @@ def getQin6(w1, w2):
 
     return const.QING6[ws]
 
-
-# 变卦计算
-def transform(gong, qin):
-    # 伏神计算
-    gua = const.YAOS[gong] * 2
-    qin = [getQin6(const.XING5[const.GUA5[gong]], const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia(gua)]
-
-    naja = getNajia(gua)
-    naj5 = [const.ZHI5[const.ZHIS.index(x[-1])] for x in naja]
-    diff = list(set(qin).difference(set(zs)))
-    yaos = [qin.index(x) for x in diff]
-    fush = [naja[i] for i in yaos]
-    naj5 = [const.XING5[int(naj5[i])] for i in yaos]
-
-    print(locals())
-
-
-# 伏神计算
-def hidden(gong, qin):
-    gua = YAOS[gong] * 2
-    qin = [getQin6(XING5[GUA5[gong]], ZHI5[ZHIS.index(x[1])]) for x in getNajia(gua)]
-
-    naja = getNajia(gua)
-    naj5 = [ZHI5[ZHIS.index(x[-1])] for x in naja]
-    diff = list(set(qin).difference(set(zs)))
-    yaos = [qin.index(x) for x in diff]
-    fush = [naja[i] for i in yaos]
-    naj5 = [XING5[int(naj5[i])] for i in yaos]
-
-    print(locals())
+#
+# # 变卦计算
+# def transform(gong, qin):
+#     # 伏神计算
+#     gua = const.YAOS[gong] * 2
+#     qin = [getQin6(const.XING5[const.GUA5[gong]], const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia(gua)]
+#
+#     naja = getNajia(gua)
+#     naj5 = [const.ZHI5[const.ZHIS.index(x[-1])] for x in naja]
+#     diff = list(set(qin).difference(set(zs)))
+#     yaos = [qin.index(x) for x in diff]
+#     fush = [naja[i] for i in yaos]
+#     naj5 = [const.XING5[int(naj5[i])] for i in yaos]
+#
+#     print(locals())
+#
+#
+# # 伏神计算
+# def hidden(gong, qin):
+#     gua = YAOS[gong] * 2
+#     qin = [getQin6(XING5[GUA5[gong]], ZHI5[ZHIS.index(x[1])]) for x in getNajia(gua)]
+#
+#     naja = getNajia(gua)
+#     naj5 = [ZHI5[ZHIS.index(x[-1])] for x in naja]
+#     diff = list(set(qin).difference(set(zs)))
+#     yaos = [qin.index(x) for x in diff]
+#     fush = [naja[i] for i in yaos]
+#     naj5 = [XING5[int(naj5[i])] for i in yaos]
+#
+#     print(locals())

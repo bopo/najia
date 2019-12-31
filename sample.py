@@ -1,7 +1,7 @@
 import sxtwl
 
 from najia.const import *
-from najia.utils import (getGong, getNajia, getQin6, getShen6,
+from najia.utils import (getGong, getNajia, getQin6, getGod6,
                          setShiYao, xkong)
 
 
@@ -160,7 +160,7 @@ def guainfo(symbol):
     # print('六亲:', zs)  # 世6爻
     # print('六亲:', len(set(zs)))  # 世6爻
 
-    shen6 = getShen6(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]]))
+    shen6 = getGod6(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]]))
 
     if len(set(qins6)) < 5:
         fu1 = YAOS[gong] * 2
