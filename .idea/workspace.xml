@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a38032c-3dcc-4a8e-a061-469e2e88527b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/test_compile.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_god6.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_mark.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_qin6.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_xkong.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/najia/najia.py" beforeDir="false" afterPath="$PROJECT_DIR$/najia/najia.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/najia/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/najia/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample0.py" beforeDir="false" afterPath="$PROJECT_DIR$/sample0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_gong.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gong.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_gua.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gua.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_najia.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_najia.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/najia/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/najia/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +12,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/najia/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/test_gua.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -102,11 +78,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/test_compile.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
               <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/najia/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -162,6 +147,7 @@
         <option value="$PROJECT_DIR$/tests/test_qin6.py" />
         <option value="$PROJECT_DIR$/tests/test_gua.py" />
         <option value="$PROJECT_DIR$/tests/test_compile.py" />
+        <option value="$PROJECT_DIR$/najia/__init__.py" />
       </list>
     </option>
   </component>
@@ -321,12 +307,12 @@
       <workItem from="1577698021945" duration="354000" />
       <workItem from="1577712401596" duration="856000" />
       <workItem from="1577713689681" duration="5818000" />
-      <workItem from="1577757405516" duration="14182000" />
+      <workItem from="1577757405516" duration="14239000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23448000" />
+    <option name="totallyTimeSpent" value="23505000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
@@ -501,6 +487,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/najia/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
         </state>
       </provider>
     </entry>
