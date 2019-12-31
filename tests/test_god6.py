@@ -1,5 +1,5 @@
-from najia.utils import getGod6
+from najia.utils import God6
 
 
 def test_shen6():
-    assert getGod6('戊子')[0] == '勾陈'
+    assert God6('戊子')[0] == '勾陈'

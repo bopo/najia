@@ -7,10 +7,10 @@ if __name__ == '__main__':
     #     d[i] = v
     #
     # print(d)
-    symbol = [2, 2, 1, 2, 4, 2]
-    symbol.reverse()
+    params = [2, 2, 1, 2, 4, 2]
+    # params.reverse()
 
     gua = Najia()
-    ret = gua.compile(symbol=symbol, date='2019-12-25 00:25')
+    ret = gua.compile(params=params, date='2019-12-25 00:20')
     print(gua.render())
     # gua.render()

@@ -3,15 +3,15 @@ import math
 
 from najia import const
 
-logging.basicConfig(level='DEBUG')
+logging.basicConfig(level='INFO')
 log = logging.getLogger(__name__)
 
 
 def getNajia(gz=None):
-    return getGZ5(gz)
+    return GZ5X(gz)
 
 
-def getGZ5(gz=''):
+def GZ5X(gz=''):
     _, z = [i for i in gz]
     zm = const.ZHIS.index(z)
     return gz + const.XING5[const.ZHI5[zm]]
@@ -50,7 +50,7 @@ def xkong(gz='甲子'):
     return const.KONG[xk]
 
 
-def getGod6(g=0):
+def God6(g=0):
     '''
     # 六神, 根据日干五行配对六神五行
 
@@ -83,15 +83,15 @@ def getGod6(g=0):
 # 世爻 >= 3, 应爻 = 世爻 - 3， index = 5 - 世爻 + 1
 # 世爻 <= 3, 应爻 = 世爻 + 3，
 # life oneself
-def setShiYao(guaStr=None):
+def setShiYao(symbol=None):
     '''
     获取世爻
 
-    :param guaStr: 卦的二进制码
+    :param symbol: 卦的二进制码
     :return: 世爻，应爻，所在卦宫位置
     '''
-    Wai = guaStr[:3]  # 外卦
-    Nei = guaStr[3:]  # 内卦
+    Wai = symbol[3:]  # 外卦
+    Nei = symbol[:3]  # 内卦
 
     def shiy(shi, index=None):
         ying = shi - 3 if shi >= 3 else shi + 3
@@ -100,11 +100,11 @@ def setShiYao(guaStr=None):
         return shi, ying, index
 
     # 天同二世天变五
-    if Wai[0] == Nei[0]:
-        if Wai[1] != Nei[1] and Wai[2] != Nei[2]:
+    if Wai[2] == Nei[2]:
+        if Wai[1] != Nei[1] and Wai[0] != Nei[0]:
             return shiy(2)
     else:
-        if Wai[1] == Nei[1] and Wai[2] == Nei[2]:
+        if Wai[1] == Nei[1] and Wai[0] == Nei[0]:
             return shiy(5)
 
     # 人同游魂人变归
@@ -116,11 +116,11 @@ def setShiYao(guaStr=None):
             return shiy(4, 7)  # , Hun
 
     # 地同四世地变初
-    if Wai[2] == Nei[2]:
-        if Wai[1] != Nei[1] and Wai[0] != Nei[0]:
+    if Wai[0] == Nei[0]:
+        if Wai[1] != Nei[1] and Wai[2] != Nei[2]:
             return shiy(4)
     else:
-        if Wai[1] == Nei[1] and Wai[0] == Nei[0]:
+        if Wai[1] == Nei[1] and Wai[2] == Nei[2]:
             return shiy(1)
 
     # 本宫六世
@@ -131,7 +131,7 @@ def setShiYao(guaStr=None):
     return shiy(3)
 
 
-def getGong(inStr, intNum):  # inStr -> '111000'  # intNum -> 世爻
+def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
     '''
     六爻卦的卦宫名
 
@@ -139,12 +139,14 @@ def getGong(inStr, intNum):  # inStr -> '111000'  # intNum -> 世爻
     一二三六外卦宫，四五游魂内变更。
     若问归魂何所取，归魂内卦是本宫。
 
-    :param inStr: 卦的二进制码
-    :param intNum: 世爻
+    :param symbol: 卦的二进制码
+    :param index: 世爻
     :return:
     '''
-    Wai = inStr[:3]  # 外卦
-    Nei = inStr[3:]  # 内卦
+
+    Wai = symbol[3:]  # 外卦
+    Nei = symbol[:3]  # 内卦
+
     Hun = ''
 
     if Wai[1] == Nei[1]:
@@ -155,22 +157,22 @@ def getGong(inStr, intNum):  # inStr -> '111000'  # intNum -> 世爻
             Hun = '归魂'
 
     # 一二三六外卦宫
-    if intNum in (1, 2, 3, 6):
+    if index in (1, 2, 3, 6):
         return const.YAOS.index(Wai)
     # 归魂内卦是本宫
     elif Hun == '归魂':
         return const.YAOS.index(Nei)
     # 四五游魂内变更
-    elif intNum in (4, 5) or Hun == '游魂':
+    elif index in (4, 5) or Hun == '游魂':
         symbol = ''.join([str(int(c) ^ 1) for c in Nei])
         return const.YAOS.index(symbol)
 
 
 # 判断是否六冲卦
 # verb
-def chong(inStr):
-    Wai = inStr[:3]  # 外卦
-    Nei = inStr[3:]  # 内卦
+def attack(symbol):
+    Wai = symbol[:3]  # 外卦
+    Nei = symbol[3:]  # 内卦
 
     # 内外卦相同
     if Wai == Nei:
@@ -184,15 +186,21 @@ def chong(inStr):
 
 
 # 纳甲配干支
-def getNajia(guaStr=None):
+def getNajia(symbol=None):
     '''
     纳甲配干支
 
-    :param guaStr:
+    :param symbol:
     :return:
     '''
 
-    wai, nei = const.YAOS.index(guaStr[:3]), const.YAOS.index(guaStr[3:])
+    Wai = symbol[3:]  # 外卦
+    Nei = symbol[:3]  # 内卦
+
+    log.debug(Wai)
+    log.debug(Nei)
+
+    wai, nei = const.YAOS.index(Wai), const.YAOS.index(Nei)
 
     gan = const.NAJIA[nei][0][0]
     ngz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[nei][0][1:]]  # 排干支
@@ -205,10 +213,6 @@ def getNajia(guaStr=None):
     return ngz + wgz
 
 
-def trans(gua, *args):
-    pass
-
-
 def setDongYao(gua, *args):
     yao = set([int(i) for i in args])
 
@@ -217,10 +221,9 @@ def setDongYao(gua, *args):
     ])
 
 
-def getQin6(w1, w2):
+def Qin6(w1, w2):
     '''
     两个五行判断六亲
-
     水1 # 木2 # 金3 # 火4 # 土5
 
     :param w1:
@@ -232,36 +235,14 @@ def getQin6(w1, w2):
 
     ws = w1 - w2
     ws = ws + 5 if ws < 0 else ws
+    q6 = const.QING6[ws]
+    log.debug(ws)
+    log.debug(q6)
+    return q6
 
-    return const.QING6[ws]
 
-#
-# # 变卦计算
-# def transform(gong, qin):
-#     # 伏神计算
-#     gua = const.YAOS[gong] * 2
-#     qin = [getQin6(const.XING5[const.GUA5[gong]], const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia(gua)]
-#
-#     naja = getNajia(gua)
-#     naj5 = [const.ZHI5[const.ZHIS.index(x[-1])] for x in naja]
-#     diff = list(set(qin).difference(set(zs)))
-#     yaos = [qin.index(x) for x in diff]
-#     fush = [naja[i] for i in yaos]
-#     naj5 = [const.XING5[int(naj5[i])] for i in yaos]
-#
-#     print(locals())
-#
-#
-# # 伏神计算
-# def hidden(gong, qin):
-#     gua = YAOS[gong] * 2
-#     qin = [getQin6(XING5[GUA5[gong]], ZHI5[ZHIS.index(x[1])]) for x in getNajia(gua)]
-#
-#     naja = getNajia(gua)
-#     naj5 = [ZHI5[ZHIS.index(x[-1])] for x in naja]
-#     diff = list(set(qin).difference(set(zs)))
-#     yaos = [qin.index(x) for x in diff]
-#     fush = [naja[i] for i in yaos]
-#     naj5 = [XING5[int(naj5[i])] for i in yaos]
-#
-#     print(locals())
+def guaName(symbol=None):
+    symbol = [x for x in symbol]
+    symbol.reverse()
+    symbol = ''.join(symbol)
+    return const.GUA64[symbol]

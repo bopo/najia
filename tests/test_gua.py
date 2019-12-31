@@ -2,17 +2,17 @@ from najia.utils import *
 
 
 def test_qin6():
-    zs = [getQin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia('101101')]
-    assert getQin6('金', '木') == '妻财'
+    zs = [Qin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia('101101')]
+    assert Qin6('金', '木') == '妻财'
 
 
 def test_gong():
-    assert getGong("101101", 6) == 2
+    assert palace("101101", 6) == 2
     # assert palace("101101", 6) == 2
 
 
 def test_shen6():
-    assert getGod6('戊子')[0] == '勾陈'
+    assert God6('戊子')[0] == '勾陈'
 
 
 def test_dong():
