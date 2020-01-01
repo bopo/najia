@@ -4,11 +4,7 @@ import math
 from najia import const
 
 logging.basicConfig(level='INFO')
-log = logging.getLogger(__name__)
-
-
-def getNajia(gz=None):
-    return GZ5X(gz)
+logger = logging.getLogger(__name__)
 
 
 def GZ5X(gz=''):
@@ -24,7 +20,7 @@ def mark(symbol=None):
     :return:
     '''
     res = [str(int(x) % 2) for x in symbol]
-    log.debug(res)
+    logger.debug(res)
     return res
 
 
@@ -171,15 +167,16 @@ def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
 # 判断是否六冲卦
 # verb
 def attack(symbol):
-    Wai = symbol[:3]  # 外卦
-    Nei = symbol[3:]  # 内卦
+    Wai = symbol[3:]  # 外卦
+    Nei = symbol[:3]  # 内卦
 
     # 内外卦相同
     if Wai == Nei:
         return True
 
     # 天雷无妄 和 雷天大壮
-    if len(set([Nei, Wai]).difference(set(['001', '111']))) == 0:
+    gua = [Nei, Wai]
+    if len(set(gua).difference(('100', '111'))) == 0:
         return True
 
     return False
@@ -197,9 +194,6 @@ def getNajia(symbol=None):
     Wai = symbol[3:]  # 外卦
     Nei = symbol[:3]  # 内卦
 
-    log.debug(Wai)
-    log.debug(Nei)
-
     wai, nei = const.YAOS.index(Wai), const.YAOS.index(Nei)
 
     gan = const.NAJIA[nei][0][0]
@@ -207,8 +201,6 @@ def getNajia(symbol=None):
 
     gan = const.NAJIA[wai][1][0]
     wgz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[wai][1][1:]]  # 排干支
-
-    log.debug(ngz + wgz)
 
     return ngz + wgz
 
@@ -236,8 +228,8 @@ def Qin6(w1, w2):
     ws = w1 - w2
     ws = ws + 5 if ws < 0 else ws
     q6 = const.QING6[ws]
-    log.debug(ws)
-    log.debug(q6)
+    logger.debug(ws)
+    logger.debug(q6)
     return q6
 
 

@@ -81,6 +81,8 @@ class Najia(object):
                 'qinx': qinx,
                 'seat': seat,
             }
+        
+        return None           
 
     def _transform(self, params=None):
         '''
@@ -111,8 +113,9 @@ class Najia(object):
                 'qin6': qin6,
                 'qinx': qinx,
             }
+        return None 
 
-    def compile(self, params=None, date=None):
+    def compile(self, params=None, gender=1, date=None, title=None):
         '''
         根据参数编译卦
 
@@ -122,6 +125,7 @@ class Najia(object):
         '''
         lunar = self._daily(date)
         solar = arrow.get(date)
+        gender = '男' if gender == 1 else '女'
 
         # 卦码
         mark = ''.join([str(int(l) % 2) for l in params])
@@ -158,8 +162,8 @@ class Najia(object):
 
         self.data = {
             'params': params,
-            'gender': '',
-            'title': '',
+            'gender': gender,
+            'title': title,
             'solar': solar,
             'lunar': lunar,
             'god6': god6,
@@ -184,7 +188,7 @@ class Najia(object):
         :return:
         '''
 
-        demo = '''男测：测天气
+        demo = '''{{gender}}测：测天气
 
 √ 公历：2019年 12月 25日 0时 20分
 √ 干支：己亥年 丙子月 丙申日 戊子时 （旬空：辰巳)
@@ -198,12 +202,12 @@ class Najia(object):
 勾陈 妻财丁卯木 官鬼丙午火 ``应
 朱雀          父母丙辰土 ``
 '''
-        tpl = '''男测：{{title}}
+        tpl = '''{{gender}}测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
 
-得「{{name}}」之「{{bian.name}}」卦
+得「{{name}}」{% if bian.name %}之「{{bian.name}}」{% endif %}卦
 
 {{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
 {{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
@@ -213,32 +217,36 @@ class Najia(object):
 {{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 '''
         rows = self.data
-        yaos = ['``', '`', '``', '○', '×']
+        yaos = ['``', '` ', '``', '○', '×']
 
         rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
 
-        if rows['hide']['qin6']:
+        if rows.get('hide'):
             empty = '            '
             rows['hide']['qin6'] = [
                 ' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty
                 for x in
                 range(0, 6)]
         else:
-            rows['hide']['qin6'] = ['' for _ in range(0, 6)]
+            rows['hide']= {'qin6': [' ' for _ in range(0, 6)]}
 
         #
-        if rows['bian']['qin6']:
-            rows['bian']['qin6'] = [
-                '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x in
-                range(0, 6)]
+        if rows.get('bian'):
+            if rows['bian']['qin6']:
+                rows['bian']['qin6'] = [
+                    '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x in
+                    range(0, 6)]
 
-        if rows['bian']['mark']:
-            rows['bian']['mark'] = [x for x in rows['bian']['mark']]
-            rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
-                                    range(0, 6)]
+            if rows['bian']['mark']:
+                rows['bian']['mark'] = [x for x in rows['bian']['mark']]
+                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
+                                        range(0, 6)]
         else:
-            rows['bian']['mark'] = ['' for _ in range(0, 6)]
+            rows['bian']= {
+                'qin6': [' ' for _ in range(0, 6)],
+                'mark': [' ' for _ in range(0, 6)],
+            }
 
         shiy = []
 
