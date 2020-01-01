@@ -112,7 +112,7 @@ class Najia(object):
                 'qinx': qinx,
             }
 
-    def compile(self, params=None, date=None):
+    def compile(self, params=None, gender=1, date=None):
         '''
         根据参数编译卦
 
@@ -122,6 +122,7 @@ class Najia(object):
         '''
         lunar = self._daily(date)
         solar = arrow.get(date)
+        gender = '男' if gender == 1 else '女'
 
         # 卦码
         mark = ''.join([str(int(l) % 2) for l in params])
@@ -158,7 +159,7 @@ class Najia(object):
 
         self.data = {
             'params': params,
-            'gender': '',
+            'gender': gender,
             'title': '',
             'solar': solar,
             'lunar': lunar,
@@ -184,7 +185,7 @@ class Najia(object):
         :return:
         '''
 
-        demo = '''男测：测天气
+        demo = '''{{gender}}测：测天气
 
 √ 公历：2019年 12月 25日 0时 20分
 √ 干支：己亥年 丙子月 丙申日 戊子时 （旬空：辰巳)
@@ -198,7 +199,7 @@ class Najia(object):
 勾陈 妻财丁卯木 官鬼丙午火 ``应
 朱雀          父母丙辰土 ``
 '''
-        tpl = '''男测：{{title}}
+        tpl = '''{{gender}}测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
@@ -213,7 +214,7 @@ class Najia(object):
 {{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 '''
         rows = self.data
-        yaos = ['``', '`', '``', '○', '×']
+        yaos = ['``', '` ', '``', '○', '×']
 
         rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]

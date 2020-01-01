@@ -12,5 +12,5 @@ if __name__ == '__main__':
 
     gua = Najia()
     ret = gua.compile(params=params, date='2019-12-25 00:20')
-    print(gua.render())
+    gua.render()
     # gua.render()

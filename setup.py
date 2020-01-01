@@ -15,7 +15,7 @@ with open('VERSION') as version_file:
     version = version_file.read()
     version = version.strip()
 
-requirements = ['click', 'sxtwl', 'jinja2', 'arrow']
+requirements = ['click', 'sxtwl', 'jinja2', 'arrow',]
 
 setup_requirements = ['pytest-runner', ]
 
