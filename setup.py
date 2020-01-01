@@ -4,6 +4,7 @@
 """The setup script."""
 
 from setuptools import find_packages, setup
+
 from najia import __version__
 
 with open('README.rst') as readme_file:

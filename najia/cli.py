@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """Console script for najia."""
-import sys,random
+import random
+import sys
 from time import sleep
 
 import click
+
 from najia.najia import Najia
+
 
 @click.command()
 @click.option('-p', '--params', default=None, help='摇卦参数')

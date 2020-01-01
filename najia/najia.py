@@ -6,9 +6,8 @@ import arrow
 import sxtwl
 from jinja2 import Template
 
-from najia.const import GANS, ZHIS, GUA64, XING5, GUA5, ZHI5, YAOS
-from najia.utils import (palace, getNajia, Qin6, God6,
-                         setShiYao, xkong, GZ5X)
+from najia.const import GANS, GUA5, GUA64, XING5, YAOS, ZHI5, ZHIS
+from najia.utils import GZ5X, God6, Qin6, getNajia, palace, setShiYao, xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
