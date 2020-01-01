@@ -81,6 +81,8 @@ class Najia(object):
                 'qinx': qinx,
                 'seat': seat,
             }
+        
+        return None           
 
     def _transform(self, params=None):
         '''
@@ -111,6 +113,7 @@ class Najia(object):
                 'qin6': qin6,
                 'qinx': qinx,
             }
+        return None 
 
     def compile(self, params=None, gender=1, date=None):
         '''
@@ -219,27 +222,31 @@ class Najia(object):
         rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
 
-        if rows['hide']['qin6']:
+        if rows.get('hide'):
             empty = '            '
             rows['hide']['qin6'] = [
                 ' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty
                 for x in
                 range(0, 6)]
         else:
-            rows['hide']['qin6'] = ['' for _ in range(0, 6)]
+            rows['hide']= {'qin6': [' ' for _ in range(0, 6)]}
 
         #
-        if rows['bian']['qin6']:
-            rows['bian']['qin6'] = [
-                '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x in
-                range(0, 6)]
+        if rows.get('bian'):
+            if rows['bian']['qin6']:
+                rows['bian']['qin6'] = [
+                    '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x in
+                    range(0, 6)]
 
-        if rows['bian']['mark']:
-            rows['bian']['mark'] = [x for x in rows['bian']['mark']]
-            rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
-                                    range(0, 6)]
+            if rows['bian']['mark']:
+                rows['bian']['mark'] = [x for x in rows['bian']['mark']]
+                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
+                                        range(0, 6)]
         else:
-            rows['bian']['mark'] = ['' for _ in range(0, 6)]
+            rows['bian']= {
+                'qin6': [' ' for _ in range(0, 6)],
+                'mark': [' ' for _ in range(0, 6)],
+            }
 
         shiy = []
 
