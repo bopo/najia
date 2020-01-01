@@ -115,7 +115,7 @@ class Najia(object):
             }
         return None 
 
-    def compile(self, params=None, gender=1, date=None):
+    def compile(self, params=None, gender=1, date=None, title=None):
         '''
         根据参数编译卦
 
@@ -163,7 +163,7 @@ class Najia(object):
         self.data = {
             'params': params,
             'gender': gender,
-            'title': '',
+            'title': title,
             'solar': solar,
             'lunar': lunar,
             'god6': god6,
@@ -207,7 +207,7 @@ class Najia(object):
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
 
-得「{{name}}」之「{{bian.name}}」卦
+得「{{name}}」{% if bian.name %}之「{{bian.name}}」{% endif %}卦
 
 {{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
 {{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
