@@ -4,16 +4,13 @@
 """The setup script."""
 
 from setuptools import find_packages, setup
+from najia import __version__
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
-
-with open('VERSION') as version_file:
-    version = version_file.read()
-    version = version.strip()
 
 requirements = ['click', 'sxtwl', 'jinja2', 'arrow',]
 
@@ -22,7 +19,7 @@ setup_requirements = ['pytest-runner', ]
 test_requirements = ['pytest>=3', ]
 
 setup(
-    author="bopowang",
+    author="bopo.wang",  
     author_email='ibopo@126.com',
     python_requires='>=3.7',
     classifiers=[
@@ -36,7 +33,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Chinese Najia.",
+    description="纳甲六爻占卜排盘接口.",
     entry_points={
         'console_scripts': [
             'najia=najia.cli:main',
@@ -53,6 +50,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/bopo/najia',
-    version=version,
+    version=__version__,
     zip_safe=False,
 )

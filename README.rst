@@ -1,6 +1,5 @@
-===============
 纳甲六爻排盘项目
-===============
+================
 
 
 .. image:: https://img.shields.io/pypi/v/najia.svg
@@ -37,16 +36,16 @@ Features
 
 阳历，阴历（干支，旬空）
 
-- 卦符: mark (001000)，自下而上
-- 卦名: name
-- 变爻: bian
-- 卦宫: gong
-- 六亲: qin6
-- 六神: god6
-- 世爻: shiy, ying
-- 纳甲: naja
-- 纳甲五行: dzwx
-- 卦宫五行: gowx
+* 卦符: mark (001000)，自下而上
+* 卦名: name
+* 变爻: bian
+* 卦宫: gong
+* 六亲: qin6
+* 六神: god6
+* 世爻: shiy, ying
+* 纳甲: naja
+* 纳甲五行: dzwx
+* 卦宫五行: gowx
 
 
 Credits
