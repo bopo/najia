@@ -199,7 +199,7 @@ class Najia(object):
 {{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 '''
         rows = self.data
-        yaos = ['``', '` ', '``', '○', '×']
+        yaos = ['``', '` ', '``', '○→', '×→']
 
         rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
