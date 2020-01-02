@@ -25,8 +25,6 @@ class Najia(object):
         return GANS[cal.tg] + ZHIS[cal.dz]
 
     def _daily(self, date=None):
-        date = arrow.get(date)
-
         lunar = sxtwl.Lunar()
         daily = lunar.getDayBySolar(date.year, date.month, date.day)
         hour = lunar.getShiGz(daily.Lday2.tg, 0)
@@ -121,8 +119,9 @@ class Najia(object):
         :param date:
         :return:
         '''
-        lunar = self._daily(date)
-        solar = arrow.get(date)
+        solar = arrow.get(date).to('Asia/Shanghai') if date is None else arrow.get(date)
+        lunar = self._daily(solar)
+        
         gender = '男' if gender == 1 else '女'
 
         # 卦码
