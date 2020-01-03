@@ -6,15 +6,16 @@ import arrow
 import sxtwl
 from jinja2 import Template
 
+# from tzlocal import get_localzone
+# locale = get_localzone() 
+
 from najia.const import GANS, GUA5, GUA64, XING5, YAOS, ZHI5, ZHIS
 from najia.utils import GZ5X, God6, Qin6, getNajia, palace, setShiYao, xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
-
 class Najia(object):
-    """docstring for Najia"""
     bian = None  # 变卦
     hide = None  # 伏神
     data = None
@@ -26,11 +27,9 @@ class Najia(object):
         return GANS[cal.tg] + ZHIS[cal.dz]
 
     def _daily(self, date=None):
-        date = arrow.get(date)
-
         lunar = sxtwl.Lunar()
         daily = lunar.getDayBySolar(date.year, date.month, date.day)
-        hour = lunar.getShiGz(daily.Lday2.tg, 0)
+        hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
 
         return {
             'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
@@ -80,8 +79,8 @@ class Najia(object):
                 'qinx': qinx,
                 'seat': seat,
             }
-        
-        return None           
+
+        return None
 
     def _transform(self, params=None):
         '''
@@ -112,7 +111,7 @@ class Najia(object):
                 'qin6': qin6,
                 'qinx': qinx,
             }
-        return None 
+        return None
 
     def compile(self, params=None, gender=1, date=None, title=None):
         '''
@@ -122,8 +121,9 @@ class Najia(object):
         :param date:
         :return:
         '''
-        lunar = self._daily(date)
-        solar = arrow.get(date)
+        solar = arrow.now() if date is None else arrow.get(date)
+        lunar = self._daily(solar)
+
         gender = '男' if gender == 1 else '女'
 
         # 卦码
@@ -142,6 +142,7 @@ class Najia(object):
         # 六亲
         qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
         qinx = [GZ5X(x) for x in getNajia(mark)]
+
         logger.debug(qin6)
 
         # 六神
@@ -150,13 +151,11 @@ class Najia(object):
         # 动爻位置
         dong = [i for i, x in enumerate(params) if x > 2]
         logger.debug(dong)
-        # exit()
 
         # 伏神
         hide = self._hidden(gong, qin6)
 
         # 变卦
-        # params.reverse()
         bian = self._transform(params=params)
 
         self.data = {
@@ -186,21 +185,6 @@ class Najia(object):
 
         :return:
         '''
-
-        demo = '''{{gender}}测：测天气
-
-√ 公历：2019年 12月 25日 0时 20分
-√ 干支：己亥年 丙子月 丙申日 戊子时 （旬空：辰巳)
-
-得「地山谦」之「水山蹇」
-
-青龙          兄弟癸酉金 `` 
-玄武          子孙癸亥水 ``世 × 父母戊戌土 `  
-白虎          父母癸丑土 `` 
-螣蛇          兄弟丙申金 `  
-勾陈 妻财丁卯木 官鬼丙午火 ``应
-朱雀          父母丙辰土 ``
-'''
         tpl = '''{{gender}}测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
@@ -216,7 +200,7 @@ class Najia(object):
 {{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 '''
         rows = self.data
-        yaos = ['``', '` ', '``', '○', '×']
+        yaos = ['``', '` ', '``', '○→', '×→']
 
         rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
         rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
@@ -228,13 +212,14 @@ class Najia(object):
                 for x in
                 range(0, 6)]
         else:
-            rows['hide']= {'qin6': [' ' for _ in range(0, 6)]}
+            rows['hide'] = {'qin6': [' ' for _ in range(0, 6)]}
 
         #
         if rows.get('bian'):
             if rows['bian']['qin6']:
                 rows['bian']['qin6'] = [
-                    '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x in
+                    '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x
+                    in
                     range(0, 6)]
 
             if rows['bian']['mark']:
@@ -242,7 +227,7 @@ class Najia(object):
                 rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
                                         range(0, 6)]
         else:
-            rows['bian']= {
+            rows['bian'] = {
                 'qin6': [' ' for _ in range(0, 6)],
                 'mark': [' ' for _ in range(0, 6)],
             }

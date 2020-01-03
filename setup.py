@@ -37,7 +37,7 @@ setup(
     description="纳甲六爻占卜排盘接口.",
     entry_points={
         'console_scripts': [
-            'najia=najia.cli:main',
+            'najia=najia.__main__:main',
         ],
     },
     install_requires=requirements,

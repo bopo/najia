@@ -15,12 +15,12 @@ def test_shen6():
     assert God6('戊子')[0] == '勾陈'
 
 
-def test_dong():
-    assert setDongYao('101101', 0, 2, 3, 5) == '000000'
-    assert setDongYao('101101', 3) == '101001'
-    # assert revise('101101', 3) == '101001'
-    # assert convert('101101', 3) == '101001'
-    # assert transform('101101', 3) == '101001'
+# def test_dong():
+#     assert setDongYao('101101', 0, 2, 3, 5) == '000000'
+#     assert setDongYao('101101', 3) == '101001'
+#     # assert revise('101101', 3) == '101001'
+#     # assert convert('101101', 3) == '101001'
+#     # assert transform('101101', 3) == '101001'
 
 
 def test_xkong():
