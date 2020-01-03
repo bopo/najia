@@ -1,5 +1,6 @@
 bump2version
 watchdog
+tzlocal
 flake8
 twine
 Click

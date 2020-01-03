@@ -6,12 +6,14 @@ import arrow
 import sxtwl
 from jinja2 import Template
 
+# from tzlocal import get_localzone
+# locale = get_localzone() 
+
 from najia.const import GANS, GUA5, GUA64, XING5, YAOS, ZHI5, ZHIS
 from najia.utils import GZ5X, God6, Qin6, getNajia, palace, setShiYao, xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
-
 
 class Najia(object):
     bian = None  # 变卦
@@ -27,7 +29,7 @@ class Najia(object):
     def _daily(self, date=None):
         lunar = sxtwl.Lunar()
         daily = lunar.getDayBySolar(date.year, date.month, date.day)
-        hour = lunar.getShiGz(daily.Lday2.tg, 0)
+        hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
 
         return {
             'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
@@ -119,9 +121,9 @@ class Najia(object):
         :param date:
         :return:
         '''
-        solar = arrow.get(date).to('Asia/Shanghai') if date is None else arrow.get(date)
+        solar = arrow.now() if date is None else arrow.get(date)
         lunar = self._daily(solar)
-        
+
         gender = '男' if gender == 1 else '女'
 
         # 卦码
