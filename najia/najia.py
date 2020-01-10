@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-
+import json
 import logging
+import os
 
 import arrow
 import sxtwl
 from jinja2 import Template
-
-# from tzlocal import get_localzone
-# locale = get_localzone() 
 
 from najia.const import GANS, GUA5, GUA64, XING5, YAOS, ZHI5, ZHIS
 from najia.utils import GZ5X, God6, Qin6, getNajia, palace, setShiYao, xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
+
 
 class Najia(object):
     bian = None  # 变卦
@@ -113,7 +112,7 @@ class Najia(object):
             }
         return None
 
-    def compile(self, params=None, gender=1, date=None, title=None):
+    def compile(self, params=None, gender=1, date=None, title=None, guaci=False):
         '''
         根据参数编译卦
 
@@ -162,6 +161,7 @@ class Najia(object):
             'params': params,
             'gender': gender,
             'title': title,
+            'guaci': guaci,
             'solar': solar,
             'lunar': lunar,
             'god6': god6,
@@ -173,7 +173,7 @@ class Najia(object):
             'qin6': qin6,
             'qinx': qinx,
             'bian': bian,
-            'hide': hide
+            'hide': hide,
         }
 
         logger.debug(self.data)
@@ -198,7 +198,9 @@ class Najia(object):
 {{god6.2}}{{hide.qin6.2}}{{qin6.2}}{{qinx.2}} {{mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
 {{god6.1}}{{hide.qin6.1}}{{qin6.1}}{{qinx.1}} {{mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
 {{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
-'''
+
+{% if guaci %}{{ guaci }}{% endif %}'''
+
         rows = self.data
         yaos = ['``', '` ', '``', '○→', '×→']
 
@@ -243,6 +245,10 @@ class Najia(object):
                 shiy.append('  ')
 
         rows['shiy'] = shiy
+
+        if self.data['guaci']:
+            rows['guaci'] = json.load(open(os.path.join(os.getcwd(), 'najia/data/dd.json'))).get(rows['name'])
+            rows['guaci'] = rows['guaci'].replace('********************', "")
 
         template = Template(tpl)
         return template.render(**rows)
