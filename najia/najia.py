@@ -247,7 +247,7 @@ class Najia(object):
         rows['shiy'] = shiy
 
         if self.data['guaci']:
-            rows['guaci'] = json.load(open(os.path.join(os.getcwd(), 'najia/data/dd.json'))).get(rows['name'])
+            rows['guaci'] = json.load(open(os.path.join(os.path.dirname(__file__), 'data/dd.json'))).get(rows['name'])
             rows['guaci'] = rows['guaci'].replace('********************', "")
 
         template = Template(tpl)
