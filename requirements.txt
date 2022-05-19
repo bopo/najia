@@ -1,5 +1,5 @@
 tzlocal
 jinja2 
 arrow 
-sxtwl 
+sxtwl==1.1.0 
 click
