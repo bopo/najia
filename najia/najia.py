@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
+import arrow
 import json
 import logging
 import os
-
-import arrow
 import sxtwl
 from jinja2 import Template
 
@@ -19,10 +18,22 @@ class Najia(object):
     hide = None  # 伏神
     data = None
 
-    def _gz(self, cal):
+    @staticmethod
+    def _gz(cal):
+        """
+        获取干支
+        :param cal:
+        :return:
+        """
         return GANS[cal.tg] + ZHIS[cal.dz]
 
-    def _cn(self, cal):
+    @staticmethod
+    def _cn(cal):
+        """
+
+        :param cal:
+        :return:
+        """
         return GANS[cal.tg] + ZHIS[cal.dz]
 
     def _daily(self, date=None):
@@ -50,14 +61,15 @@ class Najia(object):
             }
         }
 
-    def _hidden(self, gong=None, qins=None):
-        '''
+    @staticmethod
+    def _hidden(gong=None, qins=None):
+        """
         计算伏神卦
 
         :param gong:
         :param qins:
         :return:
-        '''
+        """
         if gong is None:
             raise Exception('')
 
@@ -66,8 +78,13 @@ class Najia(object):
 
         if len(set(qins)) < 5:
             mark = YAOS[gong] * 2
+
             logger.debug(mark)
+
+            # 六亲
             qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
+
+            # 干支五行
             qinx = [GZ5X(x) for x in getNajia(mark)]
             seat = [qin6.index(x) for x in list(set(qin6).difference(set(qins)))]
 
@@ -81,13 +98,14 @@ class Najia(object):
 
         return None
 
-    def _transform(self, params=None):
-        '''
+    @staticmethod
+    def _transform(params=None):
+        """
         计算变卦
 
         :param params:
         :return:
-        '''
+        """
 
         if params is None:
             raise Exception('')
@@ -110,16 +128,20 @@ class Najia(object):
                 'qin6': qin6,
                 'qinx': qinx,
             }
+
         return None
 
     def compile(self, params=None, gender=1, date=None, title=None, guaci=False):
-        '''
+        """
         根据参数编译卦
 
+        :param guaci:
+        :param title:
+        :param gender:
         :param params:
         :param date:
         :return:
-        '''
+        """
         solar = arrow.now() if date is None else arrow.get(date)
         lunar = self._daily(solar)
 
@@ -181,10 +203,10 @@ class Najia(object):
         return self
 
     def render(self):
-        '''
+        """
 
         :return:
-        '''
+        """
         tpl = '''{{gender}}测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分

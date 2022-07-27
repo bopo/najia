@@ -8,8 +8,14 @@ logger = logging.getLogger(__name__)
 
 
 def GZ5X(gz=''):
+    """
+    干支五行
+    :param gz:
+    :return:
+    """
     _, z = [i for i in gz]
     zm = const.ZHIS.index(z)
+
     return gz + const.XING5[const.ZHI5[zm]]
 
 
@@ -19,8 +25,10 @@ def mark(symbol=None):
     :param symbol:
     :return:
     """
+
     res = [str(int(x) % 2) for x in symbol]
     logger.debug(res)
+
     return res
 
 
@@ -59,7 +67,17 @@ def God6(gz=None):
     if type(gm) is str:
         gm = const.GANS.index(gm)
 
-    num = math.ceil((gm + 1) / 2) - 1
+    num = math.ceil((gm + 1) / 2) - 7
+
+    if gm == 4:
+        num = -4
+
+    if gm == 5:
+        num = -3
+
+    if gm > 5:
+        num += 1
+
     return const.SHEN6[num:] + const.SHEN6[:num]
 
 
@@ -197,10 +215,10 @@ def getNajia(symbol=None):
     wai, nei = const.YAOS.index(wai), const.YAOS.index(nei)
 
     gan = const.NAJIA[nei][0][0]
-    ngz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[nei][0][1:]]  # 排干支
+    ngz = [f'{gan}{zhi}' for zhi in const.NAJIA[nei][0][1:]]  # 排干支
 
     gan = const.NAJIA[wai][1][0]
-    wgz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[wai][1][1:]]  # 排干支
+    wgz = [f'{gan}{zhi}' for zhi in const.NAJIA[wai][1][1:]]  # 排干支
 
     return ngz + wgz
 
@@ -220,6 +238,8 @@ def Qin6(w1, w2):
     ws = w1 - w2
     ws = ws + 5 if ws < 0 else ws
     q6 = const.QING6[ws]
+
     logger.debug(ws)
     logger.debug(q6)
+
     return q6
