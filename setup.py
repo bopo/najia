@@ -13,7 +13,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['click', 'sxtwl', 'jinja2', 'arrow',]
+requirements = ['click', 'sxtwl<2', 'jinja2', 'arrow',]
 
 setup_requirements = ['pytest-runner', ]
 
