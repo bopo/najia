@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import random
 import sys
 
 import click
 
-from najia.najia import Najia
+from .najia import Najia
 
 
 @click.command()
@@ -26,5 +25,5 @@ def main(params, gender, lunar, date, title, guaci):
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover

@@ -1,13 +1,25 @@
-# -*- coding: utf-8 -*-
-import arrow
 import json
 import logging
 import os
+
+import arrow
 import sxtwl
 from jinja2 import Template
 
-from najia.const import GANS, GUA5, GUA64, XING5, YAOS, ZHI5, ZHIS
-from najia.utils import GZ5X, God6, Qin6, getNajia, palace, setShiYao, xkong
+from najia.const import GANS
+from najia.const import GUA5
+from najia.const import GUA64
+from najia.const import XING5
+from najia.const import YAOS
+from najia.const import ZHI5
+from najia.const import ZHIS
+from najia.utils import getNajia
+from najia.utils import God6
+from najia.utils import GZ5X
+from najia.utils import palace
+from najia.utils import Qin6
+from najia.utils import setShiYao
+from najia.utils import xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
@@ -270,7 +282,7 @@ class Najia(object):
 
         if self.data['guaci']:
             rows['guaci'] = json.load(open(os.path.join(os.path.dirname(__file__), 'data/dd.json'))).get(rows['name'])
-            rows['guaci'] = rows['guaci'].replace('********************', "")
+            rows['guaci'] = rows['guaci'].replace('********************', '')
 
         template = Template(tpl)
         return template.render(**rows)

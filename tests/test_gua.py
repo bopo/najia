@@ -7,7 +7,7 @@ def test_qin6():
 
 
 def test_gong():
-    assert palace("101101", 6) == 2
+    assert palace('101101', 6) == 2
     # assert palace("101101", 6) == 2
 
 
