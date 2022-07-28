@@ -20,11 +20,8 @@
 #
 import os
 import sys
-
-import najia
-
 sys.path.insert(0, os.path.abspath('..'))
-
+import najia
 
 # -- General configuration ---------------------------------------------
 
