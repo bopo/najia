@@ -1,25 +1,24 @@
+import arrow
 import json
 import logging
 import os
-
-import arrow
 import sxtwl
 from jinja2 import Template
 
-from najia.const import GANS
-from najia.const import GUA5
-from najia.const import GUA64
-from najia.const import XING5
-from najia.const import YAOS
-from najia.const import ZHI5
-from najia.const import ZHIS
-from najia.utils import getNajia
-from najia.utils import God6
-from najia.utils import GZ5X
-from najia.utils import palace
-from najia.utils import Qin6
-from najia.utils import setShiYao
-from najia.utils import xkong
+from .const import GANS
+from .const import GUA5
+from .const import GUA64
+from .const import XING5
+from .const import YAOS
+from .const import ZHI5
+from .const import ZHIS
+from .utils import GZ5X
+from .utils import God6
+from .utils import Qin6
+from .utils import getNajia
+from .utils import palace
+from .utils import setShiYao
+from .utils import xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
@@ -219,7 +218,8 @@ class Najia(object):
 
         :return:
         """
-        tpl = '''{{gender}}测：{{title}}
+        tpl = '''
+{{gender}}测：{{title}}
 
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
@@ -250,23 +250,15 @@ class Najia(object):
         else:
             rows['hide'] = {'qin6': [' ' for _ in range(0, 6)]}
 
-        #
         if rows.get('bian'):
             if rows['bian']['qin6']:
-                rows['bian']['qin6'] = [
-                    '%s%s' % (rows['bian']['qin6'][x], rows['bian']['qinx'][x]) if x in self.data['dong'] else '' for x
-                    in
-                    range(0, 6)]
+                rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data['dong'] else '' for x in range(0, 6)]
 
             if rows['bian']['mark']:
                 rows['bian']['mark'] = [x for x in rows['bian']['mark']]
-                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in
-                                        range(0, 6)]
+                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in range(0, 6)]
         else:
-            rows['bian'] = {
-                'qin6': [' ' for _ in range(0, 6)],
-                'mark': [' ' for _ in range(0, 6)],
-            }
+            rows['bian'] = {'qin6': [' ' for _ in range(0, 6)], 'mark': [' ' for _ in range(0, 6)]}
 
         shiy = []
 
@@ -282,7 +274,7 @@ class Najia(object):
 
         if self.data['guaci']:
             rows['guaci'] = json.load(open(os.path.join(os.path.dirname(__file__), 'data/dd.json'))).get(rows['name'])
-            rows['guaci'] = rows['guaci'].replace('********************', '')
+            rows['guaci'] = rows.get('guaci', '').replace('********************', '').replace('　象曰：', '象曰：')
 
         template = Template(tpl)
         return template.render(**rows)

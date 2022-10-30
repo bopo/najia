@@ -3,10 +3,13 @@ import sys
 
 import click
 
+from . import __version__
 from .najia import Najia
 
 
 @click.command()
+@click.help_option('-h', '--help')
+@click.version_option(__version__, "-V", "--version", prog_name="Najia", message="%(prog)s: version %(version)s", )
 @click.option('-p', '--params', default=None, help='摇卦参数')
 @click.option('-g', '--gender', default=1, help='摇卦人性别.')
 @click.option('-l', '--lunar', default=False, help='是否阴历.')

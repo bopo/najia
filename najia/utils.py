@@ -1,7 +1,7 @@
 import logging
 import math
 
-from najia import const
+from . import const
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
