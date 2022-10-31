@@ -125,8 +125,9 @@ def setShiYao(symbol=None):
         if wai[0] != nei[0] and wai[2] != nei[2]:
             return shiy(4, 6)  # , Hun
     else:
+        # fix 归魂问题
         if wai[0] == nei[0] and wai[2] == nei[2]:
-            return shiy(4, 7)  # , Hun
+            return shiy(3, 6)  # , Hun
 
     # 地同四世地变初
     if wai[0] == nei[0]:
