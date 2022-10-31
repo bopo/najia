@@ -108,9 +108,8 @@ def setShiYao(symbol=None):
     nei = symbol[:3]  # 内卦
 
     def shiy(shi, index=None):
-        ying = shi - 3 if shi >= 3 else shi + 3
+        ying = shi - 3 if shi > 3 else shi + 3
         index = shi if index is None else index
-
         return shi, ying, index
 
     # 天同二世天变五
