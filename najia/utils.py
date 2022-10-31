@@ -169,14 +169,16 @@ def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
         if wai[0] == nei[0] and wai[2] == nei[2]:
             hun = '归魂'
 
+    # 归魂内卦是本宫
+    if hun == '归魂':
+        return const.YAOS.index(nei)
+
     # 一二三六外卦宫
     if index in (1, 2, 3, 6):
         return const.YAOS.index(wai)
-    # 归魂内卦是本宫
-    elif hun == '归魂':
-        return const.YAOS.index(nei)
+
     # 四五游魂内变更
-    elif index in (4, 5) or hun == '游魂':
+    if index in (4, 5) or hun == '游魂':
         symbol = ''.join([str(int(c) ^ 1) for c in nei])
         return const.YAOS.index(symbol)
 

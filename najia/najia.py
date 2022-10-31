@@ -116,7 +116,7 @@ class Najia(object):
         return None
 
     @staticmethod
-    def _transform(params=None):
+    def _transform(params=None, gong=None):
         """
         计算变卦
 
@@ -135,7 +135,8 @@ class Najia(object):
 
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
-            gong = palace(mark, setShiYao(mark)[0])  # 卦宫
+            # gong = palace(mark, setShiYao(mark)[0])  # 卦宫
+
             qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
             qinx = [GZ5X(x) for x in getNajia(mark)]
 
@@ -194,7 +195,7 @@ class Najia(object):
         hide = self._hidden(gong, qin6)
 
         # 变卦
-        bian = self._transform(params=params)
+        bian = self._transform(params=params, gong=gong)
 
         self.data = {
             'params': params,
@@ -258,6 +259,7 @@ class Najia(object):
 
         if rows.get('bian'):
             if rows['bian']['qin6']:
+                # 变卦六亲问题
                 rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data['dong'] else '' for x in range(0, 6)]
 
             if rows['bian']['mark']:
