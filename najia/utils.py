@@ -1,15 +1,21 @@
 import logging
 import math
 
-from najia import const
+from . import const
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
 def GZ5X(gz=''):
+    """
+    干支五行
+    :param gz:
+    :return:
+    """
     _, z = [i for i in gz]
     zm = const.ZHIS.index(z)
+
     return gz + const.XING5[const.ZHI5[zm]]
 
 
@@ -19,8 +25,10 @@ def mark(symbol=None):
     :param symbol:
     :return:
     """
+
     res = [str(int(x) % 2) for x in symbol]
     logger.debug(res)
+
     return res
 
 
@@ -59,7 +67,17 @@ def God6(gz=None):
     if type(gm) is str:
         gm = const.GANS.index(gm)
 
-    num = math.ceil((gm + 1) / 2) - 1
+    num = math.ceil((gm + 1) / 2) - 7
+
+    if gm == 4:
+        num = -4
+
+    if gm == 5:
+        num = -3
+
+    if gm > 5:
+        num += 1
+
     return const.SHEN6[num:] + const.SHEN6[:num]
 
 
@@ -90,9 +108,8 @@ def setShiYao(symbol=None):
     nei = symbol[:3]  # 内卦
 
     def shiy(shi, index=None):
-        ying = shi - 3 if shi >= 3 else shi + 3
+        ying = shi - 3 if shi > 3 else shi + 3
         index = shi if index is None else index
-
         return shi, ying, index
 
     # 天同二世天变五
@@ -108,8 +125,9 @@ def setShiYao(symbol=None):
         if wai[0] != nei[0] and wai[2] != nei[2]:
             return shiy(4, 6)  # , Hun
     else:
+        # fix 归魂问题
         if wai[0] == nei[0] and wai[2] == nei[2]:
-            return shiy(4, 7)  # , Hun
+            return shiy(3, 6)  # , Hun
 
     # 地同四世地变初
     if wai[0] == nei[0]:
@@ -151,14 +169,16 @@ def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
         if wai[0] == nei[0] and wai[2] == nei[2]:
             hun = '归魂'
 
+    # 归魂内卦是本宫
+    if hun == '归魂':
+        return const.YAOS.index(nei)
+
     # 一二三六外卦宫
     if index in (1, 2, 3, 6):
         return const.YAOS.index(wai)
-    # 归魂内卦是本宫
-    elif hun == '归魂':
-        return const.YAOS.index(nei)
+
     # 四五游魂内变更
-    elif index in (4, 5) or hun == '游魂':
+    if index in (4, 5) or hun == '游魂':
         symbol = ''.join([str(int(c) ^ 1) for c in nei])
         return const.YAOS.index(symbol)
 
@@ -197,10 +217,10 @@ def getNajia(symbol=None):
     wai, nei = const.YAOS.index(wai), const.YAOS.index(nei)
 
     gan = const.NAJIA[nei][0][0]
-    ngz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[nei][0][1:]]  # 排干支
+    ngz = [f'{gan}{zhi}' for zhi in const.NAJIA[nei][0][1:]]  # 排干支
 
     gan = const.NAJIA[wai][1][0]
-    wgz = ['{}{}'.format(gan, zhi) for zhi in const.NAJIA[wai][1][1:]]  # 排干支
+    wgz = [f'{gan}{zhi}' for zhi in const.NAJIA[wai][1][1:]]  # 排干支
 
     return ngz + wgz
 
@@ -220,6 +240,8 @@ def Qin6(w1, w2):
     ws = w1 - w2
     ws = ws + 5 if ws < 0 else ws
     q6 = const.QING6[ws]
+
     logger.debug(ws)
     logger.debug(q6)
+
     return q6

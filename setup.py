@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """The setup script."""
-
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 from najia import __version__
 
@@ -13,14 +11,14 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['click', 'sxtwl', 'jinja2', 'arrow',]
+requirements = ['click', 'sxtwl<2', 'jinja2', 'arrow',]
 
 setup_requirements = ['pytest-runner', ]
 
 test_requirements = ['pytest>=3', ]
 
 setup(
-    author="bopo.wang",  
+    author='bopo.wang',
     author_email='ibopo@126.com',
     python_requires='>=3.7',
     classifiers=[
@@ -34,14 +32,14 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="纳甲六爻占卜排盘接口.",
+    description='纳甲六爻占卜排盘接口.',
     entry_points={
         'console_scripts': [
             'najia=najia.__main__:main',
         ],
     },
     install_requires=requirements,
-    license="MIT license",
+    license='MIT license',
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='najia',

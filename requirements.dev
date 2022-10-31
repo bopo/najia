@@ -6,6 +6,6 @@ twine
 Click
 pytest
 pytest-runner
-sxtwl
+sxtwl<2
 jinja2
 arrow
