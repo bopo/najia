@@ -6,6 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+arrow = "*"
+click = "*"
+jinja2 = "*"
+sxtwl = "==1.1.0"
+tzlocal = "*"
 
 [requires]
 python_version = "3.9"
