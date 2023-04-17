@@ -28,3 +28,25 @@ pytest-cov = "^4.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "-p no:warnings"
+testpaths = "tests"
+
+log_cli = 0
+log_cli_level = "DEBUG"
+
+[tool.commitizen]
+version = "0.1.0"
+tag_format = "v$version"
+
+update_changelog_on_bump = true
+changelog_file = "HISTORY.md"
+annotated_tag = true
+
+version_files = [
+    "najia/__init__.py:__version__",
+    "pyproject.toml:version",
+    "Makefile:VERSION := ",
+]
