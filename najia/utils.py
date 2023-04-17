@@ -145,6 +145,44 @@ def setShiYao(symbol=None):
     return shiy(3)
 
 
+def get_type(symbol=None):
+    if res := soul(symbol):
+        return res
+
+    if attack(symbol):
+        return '六冲'
+
+    if res := unite(symbol):
+        return res
+
+    return ''
+
+
+def unite(symbol=None):
+    name = const.GUA64[symbol]
+
+    for x in const.LIUHE:
+        if x in name:
+            return '六合'
+
+    return None
+
+
+def soul(symbol=None):
+    wai = symbol[3:]  # 外卦
+    nei = symbol[:3]  # 内卦
+    hun = ''
+
+    if wai[1] == nei[1]:
+        if wai[0] != nei[0] and wai[2] != nei[2]:
+            hun = '游魂'
+    else:
+        if wai[0] == nei[0] and wai[2] == nei[2]:
+            hun = '归魂'
+
+    return hun
+
+
 def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
     """
     六爻卦的卦宫名
@@ -196,8 +234,11 @@ def attack(symbol):
     # 天雷无妄 和 雷天大壮
     gua = [nei, wai]
 
-    if len(set(gua).difference(('100', '111'))) == 0:
-        return True
+    try:
+        if len(set(gua).difference(('100', '111'))) == 0:
+            return True
+    except TypeError:
+        pass
 
     return False
 
