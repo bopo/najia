@@ -403,71 +403,27 @@ reference = "mirrors"
 
 [[package]]
 name = "sxtwl"
-version = "2.0.6"
+version = "1.1.0"
 description = "sxtwl_cpp warpper for python"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sxtwl-2.0.6-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:67b91184c39090c881fd92408e16f21007319adaa545660a427e89cb4c177084"},
-    {file = "sxtwl-2.0.6-cp27-cp27m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:3200791668af9cb924145101cad6767dbc2b4ebef019369f11db9a86b610ae6a"},
-    {file = "sxtwl-2.0.6-cp27-cp27m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:92e0cd6d7399cf774222f7f9100ab667867c63f92bd3e148fa09bd17054f26ef"},
-    {file = "sxtwl-2.0.6-cp27-cp27m-win32.whl", hash = "sha256:67bae077dd55f2794321d26a1c721a1b2cc9f1bf2ee343ae1e3c44fed34e83cb"},
-    {file = "sxtwl-2.0.6-cp27-cp27m-win_amd64.whl", hash = "sha256:67197204084eb45575f42755f7fe65e8423f627f1ab3d2def6780cd3d9756ff2"},
-    {file = "sxtwl-2.0.6-cp27-cp27mu-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:7a9ce57566640d7fe5f24bbb5f039dcbf2a958f795655afa361e03e0b86b37c8"},
-    {file = "sxtwl-2.0.6-cp27-cp27mu-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:4ff58aeea5b7489c96948ba81ede0fb805479ec05d351d912122edb163446435"},
-    {file = "sxtwl-2.0.6-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:07e0c0a82ecb4089a2faa175795a91d920a18f9c2829db694a19a8aceedbe7c4"},
-    {file = "sxtwl-2.0.6-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:90b78b19526e8c558b8ba38d2abe8a22adc9d75e8cf31bebf47d06f07da395b8"},
-    {file = "sxtwl-2.0.6-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:564923152c4ce30db65ca875213fd261cd1cb8c43077c3c88c9ac9738c787b43"},
-    {file = "sxtwl-2.0.6-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:63899deeb1e499cc2d220af0770eeb42fb0433021e1549782da2dcd62a67e25c"},
-    {file = "sxtwl-2.0.6-cp310-cp310-win32.whl", hash = "sha256:7f58816326a0c84a6f157f28159478a438c2a262260c0659922d0a29e3f3dbfe"},
-    {file = "sxtwl-2.0.6-cp310-cp310-win_amd64.whl", hash = "sha256:cb21c279feb485bfa1ccb449cdfaada0a918f70a3b0d8df26944ef1860136d43"},
-    {file = "sxtwl-2.0.6-cp33-cp33m-win32.whl", hash = "sha256:c013573b7eb6370bed5207d04edef2043ebdacb551511878a98d83a6390b8c67"},
-    {file = "sxtwl-2.0.6-cp33-cp33m-win_amd64.whl", hash = "sha256:aeb69bbd474a5584c5c0c047a28bb295ff604224dd394c449953ebfdda986f49"},
-    {file = "sxtwl-2.0.6-cp34-cp34m-win32.whl", hash = "sha256:1a7b5c913a1759ed05bf035052dc8940c4eee290d953d26675300aaa46da5cc4"},
-    {file = "sxtwl-2.0.6-cp34-cp34m-win_amd64.whl", hash = "sha256:1a228c012bffc4e01a2a950ac7c709b3d424eb9839730731a1d1afc08d13d8e3"},
-    {file = "sxtwl-2.0.6-cp35-cp35m-macosx_10_15_x86_64.whl", hash = "sha256:69e49d3c74ecdde5452deabe973b42dc058c9309646821f5d85a417babd07f0a"},
-    {file = "sxtwl-2.0.6-cp35-cp35m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:8ac4a7ec9ca07ffd802db6396e1c573e1c0e615533f8e5ad6271faf7f4ec200f"},
-    {file = "sxtwl-2.0.6-cp35-cp35m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:5997725ecc9ab40bc3906d5e6a7802a829f57d99fb772cff5bf5581d741bc788"},
-    {file = "sxtwl-2.0.6-cp35-cp35m-win32.whl", hash = "sha256:3915cb8bf4cea6f773f6f8ec3ec595fe1d91957be5683e76304c9ce3ed490c74"},
-    {file = "sxtwl-2.0.6-cp35-cp35m-win_amd64.whl", hash = "sha256:0977cbefffdbc4fbe577c4c98ac2ecac31dfed832c04acaa761d504392b661ce"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:203ad4f33172c47ac7826f182718d5d92620a7b36c26dd9371ed98f5955d404a"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:561afd123e2325f7ab7aae7504e1ba57f967de47fddae4ed1584d70bd39ed3ff"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f01233d7cf5b5082e121010b9b484670f80bf9c63f0e8100a6ff2909c9325cdf"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:0c7b6b3f899360c62ee31af0af9bc70a81d4b81fd7856f84dc50d4b9a5f4ff69"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:10b4f40c392684a81f0697f30e8b098d0c519ef9b92622944e823eb21301f478"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:90662e740237df94bddbb2084244baf14d05da71d111823b42424b8bb56ba4fc"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:2d0d39f66c44880228a3d80f4bbaabde05bab8bbc0bc4535ab053b9813bc9f35"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-win32.whl", hash = "sha256:83dc1bfe6a1199e096dcf7957b9d380a93e14adc68e0335a8f4d87a91320a5af"},
-    {file = "sxtwl-2.0.6-cp36-cp36m-win_amd64.whl", hash = "sha256:ba99f5471c1b2cf6c6685cfa71d0ffad3fe494273b2775d6171c830646a80eab"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:a734ecd815f32f21ae56d9ceacb648689a6bf5c44dfcf3c186055c850cc6992c"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:e4d821ce4b670d7166a69823c0f3c1d01fb75d41b3163c3d286358fa70d96081"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3a15e1e823281429c5233701f1bcfd381027882de975aef6e679bae9f5b94413"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:acde3c9919cb96de5d14ee654591f4a4ca7263328dd94150037728de659e1c43"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:19058e5178783f1e72c3883a2c7dde6e511bad892cb8a75a10ce867b239a0bc3"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0572b57b9c3cecfa4c703456053c07af97b6424717c7cbb5d1cb18905f4af58e"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:b7f6b4f9cb792ecb8ba0868d5913dba063c837c432c124bd1f3fbd667d8bce67"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-win32.whl", hash = "sha256:3db5ae64a085b2fd7a9cb7723c0a509cd26b316f98e5b2d8d931a2fe6b7bbdd1"},
-    {file = "sxtwl-2.0.6-cp37-cp37m-win_amd64.whl", hash = "sha256:67eb842dc3f90d7063d97e336cf7852828733d3ff75e27cd5d0538d625cfa505"},
-    {file = "sxtwl-2.0.6-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:076743ab94a26d27de23f0fbb83e87e0dd3ab759a72fc6d26019e1a0c53a4705"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:4c63f386236307dc960041f6300152619b645f822e2df170f08f7bcfb676bbe9"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:07ddc520b98b4b2552e0a2319693b076f02f9a520e5f1911ea60faf8f14bd6f5"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:9ee1993cb762ffaf58511aaa7fe8b335e4fa8877070babc1fb3091893267f1b0"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:122f2c863bd2ec124f1d184acf94545706abc64e6c661501b6a399c8d3860a3d"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bc6d6a448696def949580e41d81a215df5ec5114584cd56dc8ccad9a1b717b92"},
-    {file = "sxtwl-2.0.6-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:5f76572713f2b192b4b0920dddcd979c287e044372cf957c9ef19367d8ceb0ad"},
-    {file = "sxtwl-2.0.6-cp38-cp38-win32.whl", hash = "sha256:e96d30ee6f1cb55bec5cb2588d6355e19f1e1e45390f94079e568caf0289a598"},
-    {file = "sxtwl-2.0.6-cp38-cp38-win_amd64.whl", hash = "sha256:cba5831707ccb395ea82a8a31a5144aa20652610fa0fb61e115dd2c813ec4021"},
-    {file = "sxtwl-2.0.6-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:f9a9a6f45f7977c7c73ab70212b44b2d9b00386f91ee8a17c68658011b6365b7"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:16a69bd041970197470cbd13d091c9afaf6dd31c833d843f241ef7871ef4a156"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:47f4a538b87a15a8b6fc165ecee68b6a2ef299581b159df88a7c49d3ac771c7e"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:6afc95c3b3f129bf400a38b84cf0ccc528be0e4bc5618722fb4675ea68d5ca44"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:838d12724aab3660aef7011a04bc92a1a12280e11b92350b9dddcdede0ddde2a"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:36c6db52b0f853e5af398ffeca895426c0b937af7b89befd586a1139a844d997"},
-    {file = "sxtwl-2.0.6-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:c73704cbdc3f65fe26154cd9baab343047a2112459c526233d8cbf3dda5b71af"},
-    {file = "sxtwl-2.0.6-cp39-cp39-win32.whl", hash = "sha256:8ac68842e1aedcfab8145f5a36a97edcc9d4802038ee9064dc30a08998b1c704"},
-    {file = "sxtwl-2.0.6-cp39-cp39-win_amd64.whl", hash = "sha256:0a20772ac0d1e5fc96f15f2d1dedce77d8932b6edafcc7ff3727f1ff11cfd739"},
-    {file = "sxtwl-2.0.6.tar.gz", hash = "sha256:d00e3091f05767d5914bc31fef2b012790edb1d6728c967ddb18c164e67e86ff"},
+    {file = "sxtwl-1.1.0-cp27-cp27m-win32.whl", hash = "sha256:0b294b5ced4bfdf41af2eb890fc12d4096a9d732acf4d8dc01ec0b8f6e330956"},
+    {file = "sxtwl-1.1.0-cp27-cp27m-win_amd64.whl", hash = "sha256:46ec9bf25172df197d331ac63484e065641a4a12eff041090ba5dbe29abdb43a"},
+    {file = "sxtwl-1.1.0-cp33-cp33m-win32.whl", hash = "sha256:308824d5e2c6e2e243538a509efbc7444ad496aa9e93e3de3727ce01274aa783"},
+    {file = "sxtwl-1.1.0-cp33-cp33m-win_amd64.whl", hash = "sha256:f83faf2b9a5840cb581756df3e3a7c86d39d68f301b00007ce364cc881e5b389"},
+    {file = "sxtwl-1.1.0-cp34-cp34m-win32.whl", hash = "sha256:e90001d6a77536bc616bacd528049a46ca9d56963b560c3b776cbc6f100290fd"},
+    {file = "sxtwl-1.1.0-cp34-cp34m-win_amd64.whl", hash = "sha256:3acdd1cf81e1cd3d009be36033d17093975263fa1667d2c1b8f9e8e49aede891"},
+    {file = "sxtwl-1.1.0-cp35-cp35m-win32.whl", hash = "sha256:e0bba40d12612da5e78cd36a5207a1acd43faa8ec11b8719b6f66e7e6f75b692"},
+    {file = "sxtwl-1.1.0-cp35-cp35m-win_amd64.whl", hash = "sha256:529dc6200c914ac947f53a01ec381a4d75550bcf645ccaeac71cd5033aa89805"},
+    {file = "sxtwl-1.1.0-cp36-cp36m-win32.whl", hash = "sha256:a54a3a6a5906e9dd4eef3976c45596109ad538ceddab810d299a1157e046d23e"},
+    {file = "sxtwl-1.1.0-cp36-cp36m-win_amd64.whl", hash = "sha256:33383c1876d81d7d419acc7ba4dd7e6e95e96ac9f5251d182748ba1596233893"},
+    {file = "sxtwl-1.1.0-cp37-cp37m-win32.whl", hash = "sha256:387403e53f9a78c0bd80b3e95193f5f76bc302a9aa891d0e151061286ab8fdd5"},
+    {file = "sxtwl-1.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:b60d677fb705f65b9111532654daf3ce3276c2d9f4d8241ab266bb41fc797809"},
+    {file = "sxtwl-1.1.0-cp38-cp38-win32.whl", hash = "sha256:0d7eb198b7b59cc4af8fa053f6715c392f9b7a07ecd0d1c59dfd37dc533704c1"},
+    {file = "sxtwl-1.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:5376c8a5f751314e65715f3af189906ad6ab6e5b34b0c28a5084559b3389d782"},
+    {file = "sxtwl-1.1.0.tar.gz", hash = "sha256:7ac0badade1a2b58f62b14d5e14830484e7c2bc01479a4d67e7b1e50b60b6653"},
 ]
 
 [package.source]
@@ -536,4 +492,4 @@ reference = "mirrors"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "492b8bda68d3588d9c51bc22ffac34e8db23c39af97ecfdfbce5e8b2b5de83db"
+content-hash = "c55287df99f38dc90f990aaff98ef6b2a51784caea0f9da9b8a7753f11eb3c0b"
