@@ -136,8 +136,6 @@ class Najia(object):
 
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
-            # gong = palace(mark, setShiYao(mark)[0])  # 卦宫
-
             qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
             qinx = [GZ5X(x) for x in getNajia(mark)]
 
@@ -146,7 +144,7 @@ class Najia(object):
                 'mark': mark,
                 'qin6': qin6,
                 'qinx': qinx,
-                'gong': GUAS[gong],
+                'gong': GUAS[palace(mark, setShiYao(mark)[0])],
             }
 
         return None
