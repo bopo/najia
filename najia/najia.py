@@ -1,7 +1,8 @@
-import arrow
 import json
 import logging
 import os
+
+import arrow
 import sxtwl
 from jinja2 import Template
 
@@ -13,12 +14,12 @@ from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
-from .utils import GZ5X
-from .utils import God6
-from .utils import Qin6
-from .utils import getNajia
 from .utils import get_type
+from .utils import getNajia
+from .utils import God6
+from .utils import GZ5X
 from .utils import palace
+from .utils import Qin6
 from .utils import setShiYao
 from .utils import xkong
 
@@ -268,7 +269,7 @@ class Najia(object):
             rows['main']['indent'] += '\u3000' * 1
             rows['hide'] = {'qin6': ['  ' for _ in range(0, 6)]}
 
-        rows['main']['display'] = "{indent}{name} ({gong}-{type})".format(**rows['main'])
+        rows['main']['display'] = '{indent}{name} ({gong}-{type})'.format(**rows['main'])
 
         if rows.get('bian'):
             if rows.get('hide'):
