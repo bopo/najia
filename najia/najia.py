@@ -14,12 +14,12 @@ from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
-from .utils import GZ5X
-from .utils import God6
-from .utils import Qin6
-from .utils import getNajia
 from .utils import get_type
+from .utils import getNajia
+from .utils import God6
+from .utils import GZ5X
 from .utils import palace
+from .utils import Qin6
 from .utils import setShiYao
 
 logging.basicConfig(level='INFO')
