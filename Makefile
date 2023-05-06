@@ -62,19 +62,14 @@ requirements:
 test-all: requirements ## run tests on every Python version with tox
 	tox
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source najia -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
 publish: dist ## package and upload a release
 	twine upload dist/*
 
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
+	#python setup.py sdist
+	#python setup.py bdist_wheel
+	poetry build
+	ls -lht dist
 
 bump: ## bump version.
 	cz bump --yes -ch -cc --increment patch
