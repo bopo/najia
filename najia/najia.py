@@ -3,34 +3,36 @@ import logging
 import os
 
 import arrow
-import sxtwl
 from jinja2 import Template
 
 from .const import GANS
 from .const import GUA5
 from .const import GUA64
 from .const import GUAS
+from .const import SYMBOL
 from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
-from .utils import get_type
-from .utils import getNajia
-from .utils import God6
 from .utils import GZ5X
-from .utils import palace
+from .utils import God6
 from .utils import Qin6
+from .utils import getNajia
+from .utils import get_type
+from .utils import palace
 from .utils import setShiYao
-from .utils import xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
 class Najia(object):
-    bian = None  # 变卦
-    hide = None  # 伏神
-    data = None
+
+    def __init__(self, verbose=None):
+        self.verbose = verbose or 0
+        self.bian = None  # 变卦
+        self.hide = None  # 伏神
+        self.data = None
 
     @staticmethod
     def _gz(cal):
@@ -56,29 +58,39 @@ class Najia(object):
         :param date:
         :return:
         """
-        lunar = sxtwl.Lunar()
-        daily = lunar.getDayBySolar(date.year, date.month, date.day)
-        hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
+        # lunar = sxtwl.Lunar()
+        # daily = lunar.getDayBySolar(date.year, date.month, date.day)
+        # hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
 
-        return {
-            'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
-            'month': daily.Lmonth2,
-            'year' : daily.Lyear2,
-            'day'  : daily.Lday2,
-            'hour' : hour,
+        from lunar_python import Solar
+
+        solar = Solar.fromYmdHms(date.year, date.month, date.day, date.hour, 0, 0)
+        lunar = solar.getLunar()
+
+        ganzi = lunar.getBaZi()
+
+        result = {
+            # 'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
+            'xkong': lunar.getDayXunKong(),
+            # 'month': daily.Lmonth2,
+            # 'year' : daily.Lyear2,
+            # 'day'  : daily.Lday2,
+            # 'hour' : hour,
+            # 'cn'   : {
+            #     'month': self._gz(daily.Lmonth2),
+            #     'year' : self._gz(daily.Lyear2),
+            #     'day'  : self._gz(daily.Lday2),
+            #     'hour' : self._gz(hour),
+            # },
             'gz'   : {
-                'month': self._gz(daily.Lmonth2),
-                'year' : self._gz(daily.Lyear2),
-                'day'  : self._gz(daily.Lday2),
-                'hour' : self._gz(hour),
-            },
-            'cn'   : {
-                'month': self._gz(daily.Lmonth2),
-                'year' : self._gz(daily.Lyear2),
-                'day'  : self._gz(daily.Lday2),
-                'hour' : self._gz(hour),
+                'month': ganzi[1],
+                'year' : ganzi[0],
+                'day'  : ganzi[2],
+                'hour' : ganzi[3],
             }
         }
+        # pprint(result)
+        return result
 
     @staticmethod
     def _hidden(gong=None, qins=None):
@@ -150,7 +162,7 @@ class Najia(object):
 
         return None
 
-    def compile(self, params=None, gender=1, date=None, title=None, guaci=False):
+    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, day=None, verbose=None):
         """
         根据参数编译卦
 
@@ -161,15 +173,16 @@ class Najia(object):
         :param date:
         :return:
         """
+
+        title = (title, '')[not title]
         solar = arrow.now() if date is None else arrow.get(date)
         lunar = self._daily(solar)
 
-        gender = '男' if gender == 1 else '女'
+        # gender = '男' if gender == 1 else '女'
+        gender = (gender, '')[not gender]
 
         # 卦码
         mark = ''.join([str(int(l) % 2) for l in params])
-
-        # logger.debug(mark)
 
         shiy = setShiYao(mark)  # 世应爻
 
@@ -186,7 +199,8 @@ class Najia(object):
         # logger.debug(qin6)
 
         # 六神
-        god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
+        # god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
+        god6 = God6(lunar['gz']['day'])
 
         # 动爻位置
         dong = [i for i, x in enumerate(params) if x > 2]
@@ -250,12 +264,14 @@ class Najia(object):
         empty = '\u3000' * 6
         rows = self.data
 
-        yaos = ['━　━', '━━━━', '━　━', '○→', '×→']
+        symbal = ['━　━', '━━━━', '━　━', '○→', '×→']
         # yaos = ['▅▅  ▅▅', '▅▅▅▅▅▅', '▅▅  ▅▅', '○→', '×→']
-        rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
+        symbal = SYMBOL[self.verbose]
+
+        rows['dyao'] = [symbal[x] if x in (3, 4) else '' for x in self.data['params']]
 
         rows['main'] = {}
-        rows['main']['mark'] = [yaos[int(x)] for x in self.data['mark']]
+        rows['main']['mark'] = [symbal[int(x)] for x in self.data['mark']]
         rows['main']['type'] = get_type(self.data['mark'])
 
         rows['main']['gong'] = rows['gong']
@@ -287,7 +303,7 @@ class Najia(object):
 
             if rows['bian']['mark']:
                 rows['bian']['mark'] = [x for x in rows['bian']['mark']]
-                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] for x in range(0, 6)]
+                rows['bian']['mark'] = [symbal[int(rows['bian']['mark'][x])] for x in range(0, 6)]
         else:
             rows['bian'] = {'qin6': [' ' for _ in range(0, 6)], 'mark': [' ' for _ in range(0, 6)]}
 
