@@ -9,7 +9,7 @@ from .najia import Najia
 
 @click.command()
 @click.help_option('-h', '--help')
-@click.version_option(__version__, '-V', '--version', prog_name='Najia', message='%(prog)s: version %(version)s', )
+@click.version_option(__version__, '-V', '--version', prog_name='najia', message='%(prog)s: v%(version)s', )
 @click.option('-v', '--verbose', count=True, help='卦爻样式')
 @click.option('-p', '--params', default=None, help='摇卦参数')
 @click.option('-g', '--gender', default=1, help='摇卦人性别.')

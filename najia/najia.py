@@ -14,12 +14,12 @@ from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
-from .utils import get_type
-from .utils import getNajia
-from .utils import God6
 from .utils import GZ5X
-from .utils import palace
+from .utils import God6
 from .utils import Qin6
+from .utils import getNajia
+from .utils import get_type
+from .utils import palace
 from .utils import setShiYao
 
 logging.basicConfig(level='INFO')
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class Najia(object):
 
     def __init__(self, verbose=None):
-        self.verbose = verbose or 0
+        self.verbose = (verbose, 2)[verbose > 2] or 0
         self.bian = None  # 变卦
         self.hide = None  # 伏神
         self.data = None
@@ -288,13 +288,9 @@ class Najia(object):
         rows['main']['display'] = '{indent}{name} ({gong}-{type})'.format(**rows['main'])
 
         if rows.get('bian'):
-            if rows.get('hide'):
-                s = 19
-            else:
-                s = 8
-
+            hide = (8, 19)[bool(rows.get('hide'))]
             rows['bian']['type'] = get_type(rows['bian']['mark'])
-            rows['bian']['indent'] = (s - len(rows['main']['display'])) * '\u3000'
+            rows['bian']['indent'] = (hide - len(rows['main']['display'])) * '\u3000'
 
             if rows['bian']['qin6']:
                 # 变卦六亲问题

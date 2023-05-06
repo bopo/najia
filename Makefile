@@ -46,7 +46,7 @@ clean-pyc:
 
 clean-test:
 	rm -fr .tox/
-	rm -f .coverage
+	rm -fr .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
@@ -56,22 +56,18 @@ lint: ## check style with flake8
 test: ## run tests quickly with the default Python
 	pytest -v tests
 
-requirements:
-	poetry export --without-hashes --without-urls --with dev -o requirements.txt
+pypi: dist ## Publish to PyPi
+	poetry publish --dry-run --skip-existing -vvv --repository pypi
 
-test-all: requirements ## run tests on every Python version with tox
-	tox
 
-publish: dist ## package and upload a release
-	twine upload dist/*
-
-dist: clean ## builds source and wheel package
+dist: clean lint ## builds source and wheel package
 	#python setup.py sdist
 	#python setup.py bdist_wheel
 	poetry build
 	ls -lht dist
 
 bump: ## bump version.
-	cz bump --yes -ch -cc --increment patch
+	cz bump --dry-run --yes -ch -cc --increment patch
+	#cz bump --dry-run --yes -ch -cc --increment major
 
 # DO NOT DELETE

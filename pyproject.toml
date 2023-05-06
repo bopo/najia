@@ -1,9 +1,21 @@
 [tool.poetry]
 name = "najia"
-version = '1.2.3'
+version = "1.2.4"
 description = ""
 authors = ["bopo <ibopo@126.com>"]
 readme = "README.md"
+include = ["CHANGELOG.md"]
+repository = "https://github.com/bopo/najia"
+homepage = "https://github.com/bopo/najia"
+license = "MIT"
+packages = [
+    { include = "najia" }
+]
+
+
+[tool.poetry.scripts]
+najia = 'najia.__main__:main'
+
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -25,6 +37,15 @@ pytest = "^7.3.1"
 pytest-cov = "^4.0.0"
 
 
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+pytest-cov = "^4.0.0"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.4.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
@@ -41,8 +62,9 @@ log_cli_level = "DEBUG"
 version = "1.2.4"
 tag_format = "v$version"
 update_changelog_on_bump = true
-changelog_file = "HISTORY.md"
+changelog_file = "CHANGELOG.md"
 annotated_tag = true
 version_files = [
     "najia/__init__.py:__version__",
+    "pyproject.toml:version",
 ]
