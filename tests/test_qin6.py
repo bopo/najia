@@ -1,4 +1,4 @@
-from najia.utils import qin6
+from najia.utils import get_qin6
 
 '''
 # 六亲
@@ -10,8 +10,8 @@ XING5 = ('木', '火', '土', '金', '水')
 
 
 def test_qin6():
-    assert qin6('金', '木') == '妻财'
-    assert qin6('木', '金') == '官鬼'
-    assert qin6('金', '水') == '子孙'
-    assert qin6('金', '土') == '父母'
-    assert qin6('金', '金') == '兄弟'
+    assert get_qin6('金', '木') == '妻财'
+    assert get_qin6('木', '金') == '官鬼'
+    assert get_qin6('金', '水') == '子孙'
+    assert get_qin6('金', '土') == '父母'
+    assert get_qin6('金', '金') == '兄弟'

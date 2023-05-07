@@ -15,12 +15,13 @@ from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
+from .utils import get_god6
+from .utils import get_guaci
 from .utils import get_najia
+from .utils import get_qin6
 from .utils import get_type
-from .utils import god6
-from .utils import gz5_x
+from .utils import GZ5X
 from .utils import palace
-from .utils import qin6
 from .utils import set_shi_yao
 
 logging.basicConfig(level='INFO')
@@ -115,10 +116,10 @@ class Najia(object):
             logger.debug(mark)
 
             # 六亲
-            qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
+            qin6 = [(get_qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
 
             # 干支五行
-            qinx = [gz5_x(x) for x in get_najia(mark)]
+            qinx = [GZ5X(x) for x in get_najia(mark)]
             seat = [qin6.index(x) for x in list(set(qin6).difference(set(qins)))]
 
             return {
@@ -151,8 +152,8 @@ class Najia(object):
 
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
-            qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
-            qinx = [gz5_x(x) for x in get_najia(mark)]
+            qin6 = [(get_qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
+            qinx = [GZ5X(x) for x in get_najia(mark)]
 
             return {
                 'name': GUA64.get(mark),
@@ -195,14 +196,14 @@ class Najia(object):
         name = GUA64[mark]
 
         # 六亲
-        qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
-        qinx = [gz5_x(x) for x in get_najia(mark)]
+        qin6 = [(get_qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
+        qinx = [GZ5X(x) for x in get_najia(mark)]
 
         # logger.debug(qin6)
 
         # 六神
         # god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
-        god6 = god6(lunar['gz']['day'])
+        god6 = get_god6(lunar['gz']['day'])
 
         # 动爻位置
         dong = [i for i, x in enumerate(params) if x > 2]
@@ -304,8 +305,9 @@ class Najia(object):
         rows['shiy'] = shiy
 
         if self.data['guaci']:
-            rows['guaci'] = json.load(open(os.path.join(os.path.dirname(__file__), 'data/dd.json'))).get(rows['name'])
-            rows['guaci'] = rows.get('guaci', '').replace('********************', '').replace('　象曰：', '象曰：')
+            rows['guaci'] = get_guaci(rows['name'])
+            # rows['guaci'] = json.load(open(os.path.join(os.path.dirname(__file__), 'data/dd.json'))).get(rows['name'])
+            # rows['guaci'] = rows.get('guaci', '').replace('********************', '').replace('　象曰：', '象曰：')
 
         template = Template(tpl)
         return template.render(**rows)

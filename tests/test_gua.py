@@ -2,8 +2,8 @@ from najia.utils import *
 
 
 def test_qin6():
-    zs = [qin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in get_najia('101101')]
-    assert qin6('金', '木') == '妻财'
+    zs = [get_qin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in get_najia('101101')]
+    assert get_qin6('金', '木') == '妻财'
 
 
 def test_gong():
@@ -12,7 +12,7 @@ def test_gong():
 
 
 def test_shen6():
-    assert god6('戊子')[0] == '勾陈'
+    assert get_god6('戊子')[0] == '勾陈'
 
 
 # def test_dong():

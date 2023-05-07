@@ -1,5 +1,6 @@
 import logging
 import math
+from pathlib import Path
 
 from . import const
 
@@ -7,7 +8,7 @@ logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
-def gz5_x(gz=''):
+def GZ5X(gz=''):
     """
     干支五行
     :param gz:
@@ -54,7 +55,7 @@ def xkong(gz='甲子'):
     return const.KONG[xk]
 
 
-def god6(gz=None):
+def get_god6(gz=None):
     """
     # 六神, 根据日干五行配对六神五行
 
@@ -266,7 +267,7 @@ def get_najia(symbol=None):
     return ngz + wgz
 
 
-def qin6(w1, w2):
+def get_qin6(w1, w2):
     """
     两个五行判断六亲
     水1 # 木2 # 金3 # 火4 # 土5
@@ -286,3 +287,16 @@ def qin6(w1, w2):
     logger.debug(q6)
 
     return q6
+
+
+def get_guaci(name=None):
+    import pickle
+
+    try:
+        result = Path(__file__).parent / 'data' / 'guaci.pkl'
+        result = pickle.loads(result.read_bytes())
+        result = result.get(name)
+
+        return result
+    except Exception as ex:
+        logger.exception(ex)
