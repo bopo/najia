@@ -31,20 +31,8 @@ url = "https://mirrors.ustc.edu.cn/pypi/web/simple"
 default = false
 secondary = false
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
-pytest-cov = "^4.0.0"
-
-
-
-[tool.poetry.group.test.dependencies]
-pytest = "^7.3.1"
-pytest-cov = "^4.0.0"
-
-
-[tool.poetry.group.docs.dependencies]
-mkdocs = "^1.4.3"
 
 [build-system]
 requires = ["poetry-core"]
