@@ -7,7 +7,7 @@ logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
-def GZ5X(gz=''):
+def gz5_x(gz=''):
     """
     干支五行
     :param gz:
@@ -54,7 +54,7 @@ def xkong(gz='甲子'):
     return const.KONG[xk]
 
 
-def God6(gz=None):
+def god6(gz=None):
     """
     # 六神, 根据日干五行配对六神五行
 
@@ -97,7 +97,7 @@ def God6(gz=None):
 # 世爻 >= 3, 应爻 = 世爻 - 3， index = 5 - 世爻 + 1
 # 世爻 <= 3, 应爻 = 世爻 + 3，
 # life oneself
-def setShiYao(symbol=None):
+def set_shi_yao(symbol=None):
     """
     获取世爻
 
@@ -244,7 +244,7 @@ def attack(symbol):
 
 
 # 纳甲配干支
-def getNajia(symbol=None):
+def get_najia(symbol=None):
     """
     纳甲配干支
 
@@ -266,7 +266,7 @@ def getNajia(symbol=None):
     return ngz + wgz
 
 
-def Qin6(w1, w2):
+def qin6(w1, w2):
     """
     两个五行判断六亲
     水1 # 木2 # 金3 # 火4 # 土5

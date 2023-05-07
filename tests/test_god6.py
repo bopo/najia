@@ -1,4 +1,4 @@
-from najia.utils import God6
+from najia.utils import god6
 
 
 def test_God6():
@@ -9,20 +9,20 @@ def test_God6():
     :return:
     """
 
-    assert God6('甲子')[0] == '青龙'
-    assert God6('乙丑')[0] == '青龙'
-    assert God6('丁卯')[0] == '朱雀'
-    assert God6('丙寅')[0] == '朱雀'
+    assert god6('甲子')[0] == '青龙'
+    assert god6('乙丑')[0] == '青龙'
+    assert god6('丁卯')[0] == '朱雀'
+    assert god6('丙寅')[0] == '朱雀'
 
 
 def test_G60():
-    assert God6('戊卯')[0] == '勾陈'
-    assert God6('己酉')[0] == '螣蛇'
+    assert god6('戊卯')[0] == '勾陈'
+    assert god6('己酉')[0] == '螣蛇'
 
 
 def test_G61():
-    assert God6('庚辰')[0] == '白虎'
-    assert God6('辛巳')[0] == '白虎'
+    assert god6('庚辰')[0] == '白虎'
+    assert god6('辛巳')[0] == '白虎'
 
-    assert God6('壬午')[0] == '玄武'
-    assert God6('癸未')[0] == '玄武'
+    assert god6('壬午')[0] == '玄武'
+    assert god6('癸未')[0] == '玄武'

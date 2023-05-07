@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from pathlib import Path
 
 import arrow
 from jinja2 import Template
@@ -14,13 +15,13 @@ from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
+from .utils import get_najia
 from .utils import get_type
-from .utils import getNajia
-from .utils import God6
-from .utils import GZ5X
+from .utils import god6
+from .utils import gz5_x
 from .utils import palace
-from .utils import Qin6
-from .utils import setShiYao
+from .utils import qin6
+from .utils import set_shi_yao
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
@@ -52,7 +53,8 @@ class Najia(object):
         """
         return GANS[cal.tg] + ZHIS[cal.dz]
 
-    def _daily(self, date=None):
+    @staticmethod
+    def _daily(date=None):
         """
         计算日期
         :param date:
@@ -82,11 +84,11 @@ class Najia(object):
             #     'day'  : self._gz(daily.Lday2),
             #     'hour' : self._gz(hour),
             # },
-            'gz'   : {
+            'gz': {
                 'month': ganzi[1],
-                'year' : ganzi[0],
-                'day'  : ganzi[2],
-                'hour' : ganzi[3],
+                'year': ganzi[0],
+                'day': ganzi[2],
+                'hour': ganzi[3],
             }
         }
         # pprint(result)
@@ -113,10 +115,10 @@ class Najia(object):
             logger.debug(mark)
 
             # 六亲
-            qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
+            qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
 
             # 干支五行
-            qinx = [GZ5X(x) for x in getNajia(mark)]
+            qinx = [gz5_x(x) for x in get_najia(mark)]
             seat = [qin6.index(x) for x in list(set(qin6).difference(set(qins)))]
 
             return {
@@ -149,20 +151,20 @@ class Najia(object):
 
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
-            qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
-            qinx = [GZ5X(x) for x in getNajia(mark)]
+            qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
+            qinx = [gz5_x(x) for x in get_najia(mark)]
 
             return {
                 'name': GUA64.get(mark),
                 'mark': mark,
                 'qin6': qin6,
                 'qinx': qinx,
-                'gong': GUAS[palace(mark, setShiYao(mark)[0])],
+                'gong': GUAS[palace(mark, set_shi_yao(mark)[0])],
             }
 
         return None
 
-    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, day=None, verbose=None):
+    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, **kwargs):
         """
         根据参数编译卦
 
@@ -179,12 +181,12 @@ class Najia(object):
         lunar = self._daily(solar)
 
         # gender = '男' if gender == 1 else '女'
-        gender = (gender, '')[not gender]
+        gender = ('', gender)[bool(gender)]
 
         # 卦码
-        mark = ''.join([str(int(l) % 2) for l in params])
+        mark = ''.join([str(int(p) % 2) for p in params])
 
-        shiy = setShiYao(mark)  # 世应爻
+        shiy = set_shi_yao(mark)  # 世应爻
 
         # 卦宫
         gong = palace(mark, shiy[0])  # 卦宫
@@ -193,14 +195,14 @@ class Najia(object):
         name = GUA64[mark]
 
         # 六亲
-        qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
-        qinx = [GZ5X(x) for x in getNajia(mark)]
+        qin6 = [(qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
+        qinx = [gz5_x(x) for x in get_najia(mark)]
 
         # logger.debug(qin6)
 
         # 六神
         # god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
-        god6 = God6(lunar['gz']['day'])
+        god6 = god6(lunar['gz']['day'])
 
         # 动爻位置
         dong = [i for i, x in enumerate(params) if x > 2]
@@ -215,20 +217,20 @@ class Najia(object):
         self.data = {
             'params': params,
             'gender': gender,
-            'title' : title,
-            'guaci' : guaci,
-            'solar' : solar,
-            'lunar' : lunar,
-            'god6'  : god6,
-            'dong'  : dong,
-            'name'  : name,
-            'mark'  : mark,
-            'gong'  : GUAS[gong],
-            'shiy'  : shiy,
-            'qin6'  : qin6,
-            'qinx'  : qinx,
-            'bian'  : bian,
-            'hide'  : hide,
+            'title': title,
+            'guaci': guaci,
+            'solar': solar,
+            'lunar': lunar,
+            'god6': god6,
+            'dong': dong,
+            'name': name,
+            'mark': mark,
+            'gong': GUAS[gong],
+            'shiy': shiy,
+            'qin6': qin6,
+            'qinx': qinx,
+            'bian': bian,
+            'hide': hide,
         }
 
         # logger.debug(self.data)
@@ -243,28 +245,13 @@ class Najia(object):
 
         :return:
         """
-        tpl = '''
-{{gender}}测：{{title}}
-
-公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
-干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
-
-得「{{name}}」{% if bian.name %}之「{{bian.name}}」{% endif %}卦
-
-{{main.indent}}{{main.gong}}宫: {{main.name}}{% if main.type %} ({{main.type}}){% endif %}{{bian.indent}}{% if bian.name %}{{bian.gong}}宫: {{bian.name}}{% if bian.type %} ({{bian.type}}){% endif %}{% endif %}
-{{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{main.mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
-{{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{main.mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
-{{god6.3}}{{hide.qin6.3}}{{qin6.3}}{{qinx.3}} {{main.mark.3}} {{shiy.3}} {{dyao.3}} {{bian.qin6.3}} {{bian.mark.3}}
-{{god6.2}}{{hide.qin6.2}}{{qin6.2}}{{qinx.2}} {{main.mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
-{{god6.1}}{{hide.qin6.1}}{{qin6.1}}{{qinx.1}} {{main.mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
-{{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{main.mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
-
-{% if guaci %}{{ guaci }}{% endif %}'''
+        tpl = Path(__file__).parent / 'data' / 'standard.tpl'
+        tpl = tpl.read_text(encoding='utf-8')
 
         empty = '\u3000' * 6
         rows = self.data
 
-        symbal = ['━　━', '━━━━', '━　━', '○→', '×→']
+        # symbal = ['━　━', '━━━━', '━　━', '○→', '×→']
         # yaos = ['▅▅  ▅▅', '▅▅▅▅▅▅', '▅▅  ▅▅', '○→', '×→']
         symbal = SYMBOL[self.verbose]
 

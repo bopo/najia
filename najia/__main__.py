@@ -4,7 +4,7 @@ import sys
 import click
 
 from . import __version__
-from .najia import Najia
+from . import Najia
 
 
 @click.command()
@@ -12,7 +12,7 @@ from .najia import Najia
 @click.version_option(__version__, '-V', '--version', prog_name='najia', message='%(prog)s: v%(version)s', )
 @click.option('-v', '--verbose', count=True, help='卦爻样式')
 @click.option('-p', '--params', default=None, help='摇卦参数')
-@click.option('-g', '--gender', default=1, help='摇卦人性别.')
+@click.option('-g', '--gender', default='', help='摇卦人性别.')
 @click.option('-l', '--lunar', default=False, help='是否阴历.')
 @click.option('-t', '--title', default='', help='求卦问卜事情.')
 @click.option('-c', '--guaci', is_flag=True, help='是否显示卦辞.')

@@ -2,8 +2,8 @@ from najia.utils import *
 
 
 def test_qin6():
-    zs = [Qin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in getNajia('101101')]
-    assert Qin6('金', '木') == '妻财'
+    zs = [qin6('火', const.ZHI5[const.ZHIS.index(x[1])]) for x in get_najia('101101')]
+    assert qin6('金', '木') == '妻财'
 
 
 def test_gong():
@@ -12,7 +12,7 @@ def test_gong():
 
 
 def test_shen6():
-    assert God6('戊子')[0] == '勾陈'
+    assert god6('戊子')[0] == '勾陈'
 
 
 # def test_dong():
@@ -29,7 +29,7 @@ def test_xkong():
 
 
 def test_najia():
-    assert getNajia('101101') == ['己卯', '己丑', '己亥', '己酉', '己未', '己巳']
+    assert get_najia('101101') == ['己卯', '己丑', '己亥', '己酉', '己未', '己巳']
     # assert trunk('101101') == ['己卯', '己丑', '己亥', '己酉', '己未', '己巳']
     # assert branch('101101') == ['己卯', '己丑', '己亥', '己酉', '己未', '己巳']
     # assert cycle('101101') == ['己卯', '己丑', '己亥', '己酉', '己未', '己巳']

@@ -54,7 +54,7 @@ lint: ## check style with flake8
 	pre-commit run --all-files
 
 test: ## run tests quickly with the default Python
-	pytest -v tests
+	poetry run pytest -v tests
 
 pypi: dist ## Publish to PyPi
 	poetry publish --dry-run --skip-existing -vvv --repository pypi
