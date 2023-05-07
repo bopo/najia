@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "najia"
-version = "2.0.0"
+version = "2.0.1"
 description = ""
 authors = ["bopo <ibopo@126.com>"]
 readme = "README.md"
@@ -47,7 +47,7 @@ log_cli_level = "DEBUG"
 
 
 [tool.commitizen]
-version = "2.0.0"
+version = "2.0.1"
 tag_format = "v$version"
 update_changelog_on_bump = true
 changelog_file = "CHANGELOG.md"
