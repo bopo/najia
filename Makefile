@@ -57,7 +57,7 @@ test: ## run tests quickly with the default Python
 	poetry run pytest -v tests
 
 pypi: dist ## Publish to PyPi
-	poetry publish --dry-run --skip-existing -vvv --repository pypi
+	poetry publish --dry-run --skip-existing -vvv
 
 
 dist: clean lint ## builds source and wheel package
