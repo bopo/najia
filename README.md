@@ -2,11 +2,8 @@
 ================
 
 [![image](https://img.shields.io/pypi/v/najia.svg)](https://pypi.python.org/pypi/najia)
-
 [![image](https://img.shields.io/travis/bopo/najia.svg)](https://travis-ci.org/bopo/najia)
-
 [![Documentation Status](https://readthedocs.org/projects/najia/badge/?version=latest)](https://najia.readthedocs.io/en/latest/?badge=latest)
-
 [![Updates](https://pyup.io/repos/github/bopo/najia/shield.svg)](https://pyup.io/repos/github/bopo/najia/)
 
 Python Boilerplate contains all the boilerplate you need to create a
