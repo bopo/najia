@@ -3,32 +3,36 @@ import logging
 import os
 
 import arrow
-import sxtwl
 from jinja2 import Template
 
 from .const import GANS
 from .const import GUA5
 from .const import GUA64
+from .const import GUAS
+from .const import SYMBOL
 from .const import XING5
 from .const import YAOS
 from .const import ZHI5
 from .const import ZHIS
-from .utils import GZ5X
-from .utils import God6
-from .utils import Qin6
+from .utils import get_type
 from .utils import getNajia
+from .utils import God6
+from .utils import GZ5X
 from .utils import palace
+from .utils import Qin6
 from .utils import setShiYao
-from .utils import xkong
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
 class Najia(object):
-    bian = None  # 变卦
-    hide = None  # 伏神
-    data = None
+
+    def __init__(self, verbose=None):
+        self.verbose = (verbose, 2)[verbose > 2] or 0
+        self.bian = None  # 变卦
+        self.hide = None  # 伏神
+        self.data = None
 
     @staticmethod
     def _gz(cal):
@@ -54,29 +58,39 @@ class Najia(object):
         :param date:
         :return:
         """
-        lunar = sxtwl.Lunar()
-        daily = lunar.getDayBySolar(date.year, date.month, date.day)
-        hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
+        # lunar = sxtwl.Lunar()
+        # daily = lunar.getDayBySolar(date.year, date.month, date.day)
+        # hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
 
-        return {
-            'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
-            'month': daily.Lmonth2,
-            'year': daily.Lyear2,
-            'day': daily.Lday2,
-            'hour': hour,
-            'gz': {
-                'month': self._gz(daily.Lmonth2),
-                'year': self._gz(daily.Lyear2),
-                'day': self._gz(daily.Lday2),
-                'hour': self._gz(hour),
-            },
-            'cn': {
-                'month': self._gz(daily.Lmonth2),
-                'year': self._gz(daily.Lyear2),
-                'day': self._gz(daily.Lday2),
-                'hour': self._gz(hour),
+        from lunar_python import Solar
+
+        solar = Solar.fromYmdHms(date.year, date.month, date.day, date.hour, 0, 0)
+        lunar = solar.getLunar()
+
+        ganzi = lunar.getBaZi()
+
+        result = {
+            # 'xkong': xkong(''.join([GANS[daily.Lday2.tg], ZHIS[daily.Lday2.dz]])),
+            'xkong': lunar.getDayXunKong(),
+            # 'month': daily.Lmonth2,
+            # 'year' : daily.Lyear2,
+            # 'day'  : daily.Lday2,
+            # 'hour' : hour,
+            # 'cn'   : {
+            #     'month': self._gz(daily.Lmonth2),
+            #     'year' : self._gz(daily.Lyear2),
+            #     'day'  : self._gz(daily.Lday2),
+            #     'hour' : self._gz(hour),
+            # },
+            'gz'   : {
+                'month': ganzi[1],
+                'year' : ganzi[0],
+                'day'  : ganzi[2],
+                'hour' : ganzi[3],
             }
         }
+        # pprint(result)
+        return result
 
     @staticmethod
     def _hidden(gong=None, qins=None):
@@ -135,8 +149,6 @@ class Najia(object):
 
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
-            # gong = palace(mark, setShiYao(mark)[0])  # 卦宫
-
             qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
             qinx = [GZ5X(x) for x in getNajia(mark)]
 
@@ -145,11 +157,12 @@ class Najia(object):
                 'mark': mark,
                 'qin6': qin6,
                 'qinx': qinx,
+                'gong': GUAS[palace(mark, setShiYao(mark)[0])],
             }
 
         return None
 
-    def compile(self, params=None, gender=1, date=None, title=None, guaci=False):
+    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, day=None, verbose=None):
         """
         根据参数编译卦
 
@@ -160,15 +173,16 @@ class Najia(object):
         :param date:
         :return:
         """
+
+        title = (title, '')[not title]
         solar = arrow.now() if date is None else arrow.get(date)
         lunar = self._daily(solar)
 
-        gender = '男' if gender == 1 else '女'
+        # gender = '男' if gender == 1 else '女'
+        gender = (gender, '')[not gender]
 
         # 卦码
         mark = ''.join([str(int(l) % 2) for l in params])
-
-        logger.debug(mark)
 
         shiy = setShiYao(mark)  # 世应爻
 
@@ -182,14 +196,15 @@ class Najia(object):
         qin6 = [(Qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in getNajia(mark)]
         qinx = [GZ5X(x) for x in getNajia(mark)]
 
-        logger.debug(qin6)
+        # logger.debug(qin6)
 
         # 六神
-        god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
+        # god6 = God6(''.join([GANS[lunar['day'].tg], ZHIS[lunar['day'].dz]]))
+        god6 = God6(lunar['gz']['day'])
 
         # 动爻位置
         dong = [i for i, x in enumerate(params) if x > 2]
-        logger.debug(dong)
+        # logger.debug(dong)
 
         # 伏神
         hide = self._hidden(gong, qin6)
@@ -200,25 +215,28 @@ class Najia(object):
         self.data = {
             'params': params,
             'gender': gender,
-            'title': title,
-            'guaci': guaci,
-            'solar': solar,
-            'lunar': lunar,
-            'god6': god6,
-            'dong': dong,
-            'name': name,
-            'mark': mark,
-            'gong': gong,
-            'shiy': shiy,
-            'qin6': qin6,
-            'qinx': qinx,
-            'bian': bian,
-            'hide': hide,
+            'title' : title,
+            'guaci' : guaci,
+            'solar' : solar,
+            'lunar' : lunar,
+            'god6'  : god6,
+            'dong'  : dong,
+            'name'  : name,
+            'mark'  : mark,
+            'gong'  : GUAS[gong],
+            'shiy'  : shiy,
+            'qin6'  : qin6,
+            'qinx'  : qinx,
+            'bian'  : bian,
+            'hide'  : hide,
         }
 
-        logger.debug(self.data)
+        # logger.debug(self.data)
 
         return self
+
+    def gua_type(self, i):
+        return
 
     def render(self):
         """
@@ -233,38 +251,55 @@ class Najia(object):
 
 得「{{name}}」{% if bian.name %}之「{{bian.name}}」{% endif %}卦
 
-{{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
-{{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
-{{god6.3}}{{hide.qin6.3}}{{qin6.3}}{{qinx.3}} {{mark.3}} {{shiy.3}} {{dyao.3}} {{bian.qin6.3}} {{bian.mark.3}}
-{{god6.2}}{{hide.qin6.2}}{{qin6.2}}{{qinx.2}} {{mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
-{{god6.1}}{{hide.qin6.1}}{{qin6.1}}{{qinx.1}} {{mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
-{{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
+{{main.indent}}{{main.gong}}宫: {{main.name}}{% if main.type %} ({{main.type}}){% endif %}{{bian.indent}}{% if bian.name %}{{bian.gong}}宫: {{bian.name}}{% if bian.type %} ({{bian.type}}){% endif %}{% endif %}
+{{god6.5}}{{hide.qin6.5}}{{qin6.5}}{{qinx.5}} {{main.mark.5}} {{shiy.5}} {{dyao.5}} {{bian.qin6.5}} {{bian.mark.5}}
+{{god6.4}}{{hide.qin6.4}}{{qin6.4}}{{qinx.4}} {{main.mark.4}} {{shiy.4}} {{dyao.4}} {{bian.qin6.4}} {{bian.mark.4}}
+{{god6.3}}{{hide.qin6.3}}{{qin6.3}}{{qinx.3}} {{main.mark.3}} {{shiy.3}} {{dyao.3}} {{bian.qin6.3}} {{bian.mark.3}}
+{{god6.2}}{{hide.qin6.2}}{{qin6.2}}{{qinx.2}} {{main.mark.2}} {{shiy.2}} {{dyao.2}} {{bian.qin6.2}} {{bian.mark.2}}
+{{god6.1}}{{hide.qin6.1}}{{qin6.1}}{{qinx.1}} {{main.mark.1}} {{shiy.1}} {{dyao.1}} {{bian.qin6.1}} {{bian.mark.1}}
+{{god6.0}}{{hide.qin6.0}}{{qin6.0}}{{qinx.0}} {{main.mark.0}} {{shiy.0}} {{dyao.0}} {{bian.qin6.0}} {{bian.mark.0}}
 
 {% if guaci %}{{ guaci }}{% endif %}'''
 
+        empty = '\u3000' * 6
         rows = self.data
-        yaos = ['``', '` ', '``', '○→', '×→']
 
-        rows['dyao'] = [yaos[x] if x in (3, 4) else '' for x in self.data['params']]
-        rows['mark'] = [yaos[int(x)] for x in self.data['mark']]
+        symbal = ['━　━', '━━━━', '━　━', '○→', '×→']
+        # yaos = ['▅▅  ▅▅', '▅▅▅▅▅▅', '▅▅  ▅▅', '○→', '×→']
+        symbal = SYMBOL[self.verbose]
+
+        rows['dyao'] = [symbal[x] if x in (3, 4) else '' for x in self.data['params']]
+
+        rows['main'] = {}
+        rows['main']['mark'] = [symbal[int(x)] for x in self.data['mark']]
+        rows['main']['type'] = get_type(self.data['mark'])
+
+        rows['main']['gong'] = rows['gong']
+        rows['main']['name'] = rows['name']
+        rows['main']['indent'] = '\u3000' * 2
 
         if rows.get('hide'):
-            empty = '            '
-            rows['hide']['qin6'] = [
-                ' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty
-                for x in
-                range(0, 6)]
+            rows['hide']['qin6'] = [' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty for x in range(0, 6)]
+            rows['main']['indent'] += empty
         else:
-            rows['hide'] = {'qin6': [' ' for _ in range(0, 6)]}
+            rows['main']['indent'] += '\u3000' * 1
+            rows['hide'] = {'qin6': ['  ' for _ in range(0, 6)]}
+
+        rows['main']['display'] = '{indent}{name} ({gong}-{type})'.format(**rows['main'])
 
         if rows.get('bian'):
+            hide = (8, 19)[bool(rows.get('hide'))]
+            rows['bian']['type'] = get_type(rows['bian']['mark'])
+            rows['bian']['indent'] = (hide - len(rows['main']['display'])) * '\u3000'
+
             if rows['bian']['qin6']:
                 # 变卦六亲问题
-                rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data['dong'] else '' for x in range(0, 6)]
+                rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data['dong'] else f'  {rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}'
+                                        for x in range(0, 6)]
 
             if rows['bian']['mark']:
                 rows['bian']['mark'] = [x for x in rows['bian']['mark']]
-                rows['bian']['mark'] = [yaos[int(rows['bian']['mark'][x])] if x in self.data['dong'] else '' for x in range(0, 6)]
+                rows['bian']['mark'] = [symbal[int(rows['bian']['mark'][x])] for x in range(0, 6)]
         else:
             rows['bian'] = {'qin6': [' ' for _ in range(0, 6)], 'mark': [' ' for _ in range(0, 6)]}
 
@@ -272,10 +307,6 @@ class Najia(object):
 
         # 显示世应字
         for x in range(0, 6):
-            print('x =>', x)
-            print(self.data['shiy'])
-            # print(self.data['shiy'][1])
-
             if x == self.data['shiy'][0] - 1:
                 shiy.append('世')
             elif x == self.data['shiy'][1] - 1:
