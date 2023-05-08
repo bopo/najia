@@ -1,5 +1,5 @@
-{{gender}}测：{{title}}
-
+{% if title %}{{gender}}测：{{title}}
+{% endif %}
 公历：{{solar.year}}年 {{solar.month}}月 {{solar.day}}日 {{solar.hour}}时 {{solar.minute}}分
 干支：{{lunar.gz.year}}年 {{lunar.gz.month}}月 {{lunar.gz.day}}日 {{lunar.gz.hour}}时 （旬空：{{lunar.xkong}})
 
