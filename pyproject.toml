@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "najia"
 version = "2.0.1"
-description = ""
+description = "基于 Python 编写的纳甲六爻排盘程序"
 authors = ["bopo <ibopo@126.com>"]
 readme = "README.md"
 include = ["CHANGELOG.md"]

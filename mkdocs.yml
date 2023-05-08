@@ -1,0 +1,10 @@
+site_name: Najia(纳甲起卦)
+site_description: 基于 Python 编写的纳甲六爻起卦程序
+
+theme: readthedocs
+
+nav:
+- 项目概述: index.md
+- 安装说明: setup.md
+- 使用说明: quick.md
+- 修改日志: CHANGELOG.md

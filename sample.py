@@ -1,4 +1,4 @@
-from najia.najia import Najia
+from najia import Najia
 
 if __name__ == '__main__':
     params = [2, 2, 1, 2, 4, 2]
