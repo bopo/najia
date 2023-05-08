@@ -1,10 +1,9 @@
-import json
 import logging
-import os
 from pathlib import Path
 
 import arrow
 from jinja2 import Template
+from lunar_python import Solar
 
 from .const import GANS
 from .const import GUA5
@@ -31,7 +30,8 @@ logger = logging.getLogger(__name__)
 class Najia(object):
 
     def __init__(self, verbose=None):
-        self.verbose = (verbose, 2)[verbose > 2] or 0
+        verbose = verbose or 0
+        self.verbose = (verbose, 2)[verbose > 2]
         self.bian = None  # 变卦
         self.hide = None  # 伏神
         self.data = None
@@ -65,8 +65,6 @@ class Najia(object):
         # daily = lunar.getDayBySolar(date.year, date.month, date.day)
         # hour = lunar.getShiGz(daily.Lday2.tg, date.hour)
 
-        from lunar_python import Solar
-
         solar = Solar.fromYmdHms(date.year, date.month, date.day, date.hour, 0, 0)
         lunar = solar.getLunar()
 
@@ -88,8 +86,8 @@ class Najia(object):
             'gz': {
                 'month': ganzi[1],
                 'year': ganzi[0],
-                'day': ganzi[2],
                 'hour': ganzi[3],
+                'day': ganzi[2],
             }
         }
         # pprint(result)
@@ -153,19 +151,19 @@ class Najia(object):
         if 3 in params or 4 in params:
             mark = ''.join(['1' if v in [1, 4] else '0' for v in params])
             qin6 = [(get_qin6(XING5[int(GUA5[gong])], ZHI5[ZHIS.index(x[1])])) for x in get_najia(mark)]
-            qinx = [GZ5X(x) for x in get_najia(mark)]
+            qinx = [GZ5X(x) for x in get_najia(mark)]  # noqa
 
             return {
                 'name': GUA64.get(mark),
                 'mark': mark,
                 'qin6': qin6,
-                'qinx': qinx,
+                'qinx': qinx,  # noqa
                 'gong': GUAS[palace(mark, set_shi_yao(mark)[0])],
             }
 
         return None
 
-    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, **kwargs):
+    def compile(self, params=None, gender=None, date=None, title=None, guaci=False, **kwargs):  # noqa
         """
         根据参数编译卦
 
@@ -267,7 +265,9 @@ class Najia(object):
         rows['main']['indent'] = '\u3000' * 2
 
         if rows.get('hide'):
-            rows['hide']['qin6'] = [' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty for x in range(0, 6)]
+            rows['hide']['qin6'] = [
+                ' %s%s ' % (rows['hide']['qin6'][x], rows['hide']['qinx'][x]) if x in rows['hide']['seat'] else empty
+                for x in range(0, 6)]
             rows['main']['indent'] += empty
         else:
             rows['main']['indent'] += '\u3000' * 1
@@ -282,7 +282,8 @@ class Najia(object):
 
             if rows['bian']['qin6']:
                 # 变卦六亲问题
-                rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data['dong'] else f'  {rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}'
+                rows['bian']['qin6'] = [f'{rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}' if x in self.data[
+                    'dong'] else f'  {rows["bian"]["qin6"][x]}{rows["bian"]["qinx"][x]}'
                                         for x in range(0, 6)]
 
             if rows['bian']['mark']:

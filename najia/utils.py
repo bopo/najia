@@ -8,7 +8,7 @@ logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 
 
-def GZ5X(gz=''):
+def GZ5X(gz=''):# noqa
     """
     干支五行
     :param gz:
@@ -33,7 +33,7 @@ def mark(symbol=None):
     return res
 
 
-def xkong(gz='甲子'):
+def xkong(gz='甲子'):# noqa
     """
     计算旬空
 
@@ -170,7 +170,7 @@ def unite(symbol=None):
 
 
 def soul(symbol=None):
-    wai = symbol[3:]  # 外卦
+    wai = symbol[3:]  # 外卦 # noqa
     nei = symbol[:3]  # 内卦
     hun = ''
 
@@ -197,7 +197,7 @@ def palace(symbol=None, index=None):  # inStr -> '111000'  # intNum -> 世爻
     :return:
     """
 
-    wai = symbol[3:]  # 外卦
+    wai = symbol[3:]  # 外卦 # noqa
     nei = symbol[:3]  # 内卦
     hun = ''
 

@@ -18,7 +18,7 @@ from . import Najia
 @click.option('-c', '--guaci', is_flag=True, help='是否显示卦辞.')
 @click.option('-d', '--date', default=None, help='日期 YYYY-MM-DD hh:mm.')
 @click.option('--day', default=None, help='日干支.')
-def main(params, gender, lunar, date, title, guaci, day, verbose):
+def main(params, gender, lunar, date, title, guaci, day, verbose):  # noqa
     params = [random.randint(1, 4) for _ in range(0, 6)] if params is None else params
     params = [int(x) for x in params.replace(',', '')] if type(params) == str else params
     params = [int(str(x).replace('0', '4')) for x in params]
